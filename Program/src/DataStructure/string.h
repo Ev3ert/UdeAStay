@@ -12,7 +12,7 @@ private:
     // returns the length of the string
     static unsigned int strLength(const char *str)
     {
-        unsigned int len = 0;
+        unsigned int len {0};
         while (str[len] != '\0') // while not the end of the string
         {
             len++;

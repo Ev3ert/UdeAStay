@@ -1,5 +1,6 @@
 #include "DataStructure/list.h"
 #include "DataStructure/string.h"
+#include "Utils/ConUtils.h"
 #include <iostream>
 
 
@@ -64,45 +65,59 @@ void listTesting()
 
 void stringTesting()
 {
+    printTitle(" TESTING STRINGS ", '=', 50);
+    printDivider('=', 50);
+
     // create a string empty
-    std::cout << "---Creando string vacio---\n";
+    printCentered("---Creando string vacio---", 50);
     String emptyStr;
-    std::cout << "Tamano del string vacio: " << emptyStr.size() << "\n";
-    std::cout << "Contenido del string vacio: \"" << emptyStr.getRawData() << "\"\n\n";
+    printInfo("Tamano del string vacio: ", emptyStr.size());
+    printInfo("Contenido del string vacio: ", emptyStr.getRawData());
+
+    space();
 
     // create a string with a initial value
-    std::cout << "---Inicializacion con valor de string---\n";
+    printCentered("---Creando string con valor inicial---", 50);
     String hello("Hello, World!");
-    std::cout << "Contenido del string: \"" << hello.getRawData() << "\"\n";
-    std::cout << "Tamano del string: " << hello.size() << "\n\n";
+    printInfo("Contenido del string: ", hello.getRawData());
+    printInfo("Tamano del string: ", hello.size());
+
+    space();
 
     // create a string with a copy constructor
-    std::cout << "---Creando string con constructor de copia---\n";
+    printCentered("---Creando string con constructor de copia---", 50);
     String copyStr(hello);
-    std::cout << "Contenido del string original: \"" << hello.getRawData() << "\"\n";
-    std::cout << "Contenido del string copiado: \"" << copyStr.getRawData() << "\"\n";
+    printInfo("Contenido del string original: ", hello.getRawData());
+    printInfo("Contenido del string copiado: ", copyStr.getRawData());
+
+    space();
 
     // copy with assignment operator
-    std::cout << "---Creando string con operador de asignacion---\n";
+    printCentered("---Creando string con operador de asignacion---", 50);
     String assigned;
     assigned = hello;
-    std::cout << "Contenido del string original: \"" << hello.getRawData() << "\"\n";
-    std::cout << "Contenido del string asignado: \"" << assigned.getRawData() << "\"\n\n";    
+    printInfo("Contenido del string original: ", hello.getRawData());
+    printInfo("Contenido del string asignado: ", assigned.getRawData());  
+    
+    space();
 
     // compare strings
-    std::cout << "---Operador de igualdad---\n";
+    printCentered("---Comparando strings---", 50);
     String str1("Test");
     String str2("Test");
     String str3("Different");
     
-    std::cout << "str1: \"" << str1.getRawData() << "\"\n";
-    std::cout << "str2: \"" << str2.getRawData() << "\"\n";
-    std::cout << "str3: \"" << str3.getRawData() << "\"\n";
+    printInfo("Contenido del string 1: ", str1.getRawData());
+    printInfo("Contenido del string 2: ", str2.getRawData());
+    printInfo("Contenido del string 3: ", str3.getRawData());
     
-    std::cout << "str1 == str2: " << (str1 == str2 ? "true" : "false") << "\n";
-    std::cout << "str1 == str3: " << (str1 == str3 ? "true" : "false") << "\n";
-    std::cout << "str2 == str3: " << (str2 == str3 ? "true" : "false") << "\n\n";
-    
+    printInfo("str1 == str2: ", 
+            (str1 == str2 ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m"));
+    printInfo("str1 == str3: ", 
+            (str1 == str3 ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m"));
+    printInfo("str2 == str3: ", 
+            (str2 == str3 ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m"));
+
 }
 
 
@@ -110,5 +125,21 @@ int main()
 {
     stringTesting();
 
+    pause();
+
+    clearConsole();
+
+    float floatValue;
+    std::cout << "Ingrese un numero decimal: ";
+    floatValue = readFloat();
+
+    int intValue;
+    std::cout << "Ingrese un numero entero: ";
+    intValue = readInt();
+
+    std::cout << "El numero decimal es: " << floatValue << "\n";
+    std::cout << "El numero entero es: " << intValue << "\n";
+
     return 0;
+
 }
