@@ -4,6 +4,7 @@
 #include "../DataStructure/string.h"
 #include <iostream>
 
+
 class Date
 {
 private:
@@ -90,7 +91,7 @@ public:
     int getWeekDay() const
     {
         // i'dont know how this works, but it works
-        
+
         int d = day;
         int m = month;
         int y = year;
