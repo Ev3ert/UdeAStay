@@ -12,6 +12,7 @@ private:
         Node *next;
 
         Node(T value) : data(value), next(nullptr) {}
+
     };
 
     Node *head;
@@ -19,7 +20,42 @@ private:
     unsigned int elements;
 
 public:
+    /// * Constructors
+
     List() : head(nullptr), tail(nullptr), elements(0) {}
+
+    List(const List &other) : head(nullptr), tail(nullptr), elements(0) 
+    {
+        Node *current = other.head;
+        while(current)
+        {
+            insertEnd(current->data);
+            current = current->next;
+        }
+    }
+
+
+    /// * Operators
+
+    List<T>& operator=(const List<T>& other)
+    {
+        if (this != &other) // Avoid self-assignment
+        {
+            clear();
+
+            Node* current = other.head;
+            while (current)
+            {
+                insertEnd(current->data);
+                current = current->next;
+            }
+        }
+
+        return *this;
+
+    }
+
+    /// * Destructor
 
     ~List()
     {

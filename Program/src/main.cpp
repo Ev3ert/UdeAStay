@@ -119,7 +119,7 @@ void stringTesting()
             (str2 == str3 ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m"));
 
     space();
-    
+
     // Add strings
     printCentered("---Sumando strings---", 50);
     String str4("Hello");
@@ -131,6 +131,23 @@ void stringTesting()
     printInfo("Contenido del string 5: ", str5.getRawData());
     printInfo("str4 + str5: ", strSum.getRawData());
 
+    space();
+
+    // Split string
+    printCentered("---Dividiendo string---", 50);
+
+    String line("2023-10-01:Ubicacion=Mi casa:50000");
+
+    List<String> fields;
+    fields = line.split(':');
+
+    for(unsigned int i = 0; i < fields.size(); i++)
+    {
+        String *field = fields.get(i);
+        printInfo("Campo: ", field->getRawData());
+    }
+
+
 }
 
 
@@ -138,20 +155,6 @@ int main()
 {
     stringTesting();
 
-    pause();
-
-    clearConsole();
-
-    float floatValue;
-    print("Ingrese un numero decimal: ");
-    floatValue = readFloat();
-
-    int intValue;
-    print("Ingrese un numero entero: ");
-    intValue = readInt();
-
-    printInfo("El numero decimal es: ", floatValue);
-    printInfo("El numero entero es: ", intValue);
 
     return 0;
 

@@ -2,6 +2,7 @@
 #define STRING_H
 
 #include <iostream>
+#include "list.h"
 
 class String
 {
@@ -52,27 +53,24 @@ public:
     // * Contructors
 
     // Constructor to initialize the string without value
-    String()
+    String() : data(new char[1]), length(0)
     {
-        data = new char[1];
         data[0] = '\0';
-        length = 0;
     }
 
     // Constructor to initialize the string with a value
-    String(const char *str)
+    String(const char *str) 
+        : data(new char[strLength(str)]), length(strLength(str))
     {
-        length = strLength(str);
-        data = new char[length + 1]; // +1 for the null terminator
         strCopy(data, str);
     }
 
+
     // Copy constructor
-    String(const String &other) // reference to avoid copying
+    String(const String &other) 
+            : length(other.length), data(new char[other.length + 1])
     {
-        length = other.length;
-        data = new char[length + 1]; // ? Why not use data = other.data;?
-        strCopy(data, other.data);   // to avoid indefinide behavior
+        strCopy(data, other.data);
     }
 
     // * Operator Overloading
@@ -127,6 +125,42 @@ public:
     {
         return data;
     }
+ 
+
+    // Method to split the string into a list of strings
+    List<String> split(char delimiter) const
+    {
+        List<String> parts;
+        unsigned int start = 0;  // start position of the substring
+        
+        for (unsigned int i = 0; i <= length; i++)
+        {
+            // Process substrings at delimiter or end of string
+            if (i == length || data[i] == delimiter)
+            {
+                // Only create substring if it has content                                                                                                                                                                  ]
+                if (i - start > 0)  // Skip empty strings
+                {
+                    // Create the substring
+                    char* part = new char[i - start + 1];
+                    for (unsigned int j = 0; j < i - start; j++)
+                    {
+                        part[j] = data[start + j];
+                    }
+                    part[i - start] = '\0';
+                    
+                    // Add to list and clean up
+                    parts.insertEnd(String(part));
+                    delete[] part;
+                }
+                start = i + 1;  // update the start position for the next substring
+            }
+        }
+        
+        return parts;
+    }
+
+
 };
 
 #endif // STRING_H
