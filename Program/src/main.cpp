@@ -118,6 +118,19 @@ void stringTesting()
     printInfo("str2 == str3: ", 
             (str2 == str3 ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m"));
 
+    space();
+    
+    // Add strings
+    printCentered("---Sumando strings---", 50);
+    String str4("Hello");
+    String str5("World");
+
+    String strSum {str4 + str5};
+ 
+    printInfo("Contenido del string 4: ", str4.getRawData());
+    printInfo("Contenido del string 5: ", str5.getRawData());
+    printInfo("str4 + str5: ", strSum.getRawData());
+
 }
 
 
@@ -130,15 +143,15 @@ int main()
     clearConsole();
 
     float floatValue;
-    std::cout << "Ingrese un numero decimal: ";
+    print("Ingrese un numero decimal: ");
     floatValue = readFloat();
 
     int intValue;
-    std::cout << "Ingrese un numero entero: ";
+    print("Ingrese un numero entero: ");
     intValue = readInt();
 
-    std::cout << "El numero decimal es: " << floatValue << "\n";
-    std::cout << "El numero entero es: " << intValue << "\n";
+    printInfo("El numero decimal es: ", floatValue);
+    printInfo("El numero entero es: ", intValue);
 
     return 0;
 

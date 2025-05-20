@@ -90,6 +90,19 @@ public:
         return *this;
     }
 
+    String operator+(const String &other)
+    {
+        unsigned int newLength = length + other.length;
+        char *newData = new char[newLength + 1];
+
+        strCopy(newData, data);
+        strCopy(newData + length, other.data);
+
+        String result(newData);
+        delete[] newData;
+        return result;
+    }
+
     bool operator==(const String &other) const
     {
         return strEqual(data, other.data);
