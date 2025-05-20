@@ -1,6 +1,7 @@
 #include "DataStructure/list.h"
 #include "DataStructure/string.h"
 #include "Utils/ConUtils.h"
+#include "Utils/date.h"
 #include <iostream>
 
 
@@ -150,11 +151,48 @@ void stringTesting()
 
 }
 
+void dateTesting()
+{
+    Date date1(1, 1, 2024);
+    Date date2(29, 2, 2024);
+    Date date3(31, 4, 2024);
+    Date date4(15, 8, 2023);
+
+    Date dates[] = {date1, date2, date3, date4};
+
+    for(const Date& f : dates)
+    {
+        if(f.isValid())
+        {
+            printSuccess("Fecha valida: ");
+            f.printDate();
+        }
+        else
+        {
+            printError("Fecha invalida: ");
+            f.printDate();
+        }
+        space();
+    }
+
+    if(date4 < date1)
+    {
+        printSuccess("15/08/2023 es menor que 01/01/2024");
+    }
+    else
+    {
+        printError("15/08/2023 no es menor que 01/01/2024");
+    }
+
+    space();
+
+}
+
 
 int main()
 {
-    stringTesting();
 
+    dateTesting();
 
     return 0;
 
