@@ -55,6 +55,7 @@ public:
 
     }
 
+
     /// * Destructor
 
     ~List()
@@ -158,6 +159,7 @@ public:
 
         return &(current->data);
     }
+
 
     // Check if the list is empty
     bool isEmpty() const

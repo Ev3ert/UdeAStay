@@ -17,13 +17,13 @@ void printInfo(const char *text, const T &value)
 }                        
 
 // Function to print a title with a fill character
-void printTitle(const char *title, char fill = '-', unsigned int width = 40);
+void printTitle(const char *title, char fill = '-', unsigned int width = 50);
 
 // Funtion to print a divider with a fill character
-void printDivider(char fill = '-', unsigned int width = 40);
+void printDivider(char fill = '-', unsigned int width = 50);
 
 // Funtion to print a text centered in the console
-void printCentered(const char *text, unsigned int width = 40);
+void printCentered(const char *text, unsigned int width = 50);
 
 // Function for printing green success text 
 void printSuccess(const char *text);

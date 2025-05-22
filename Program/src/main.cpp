@@ -2,6 +2,10 @@
 #include "DataStructure/string.h"
 #include "Utils/ConUtils.h"
 #include "Utils/date.h"
+#include "Actors/reservation.h"
+#include "Actors/accommodations.h"
+#include "Actors/host.h"
+#include "Actors/guest.h"
 #include <iostream>
 
 
@@ -183,16 +187,135 @@ void dateTesting()
     {
         printError("15/08/2023 no es menor que 01/01/2024");
     }
+    space();
+
+    if(date1 > date4)
+    {
+        printSuccess("01/01/2024 es mayor que 15/08/2023");
+    }
+    else
+    {
+        printError("01/01/2024 no es mayor que 15/08/2023");
+    }
+    space();
+
+    if(date1 == date4)
+    {
+        printSuccess("01/01/2024 es igual que 15/08/2023");
+    }
+    else
+    {
+        printError("01/01/2024 no es igual que 15/08/2023");
+    }
+    space();
+
+    if(date1 >= date4)
+    {
+        printSuccess("01/01/2024 es mayor o igual que 15/08/2023");
+    }
+    else
+    {
+        printError("01/01/2024 no es mayor o igual que 15/08/2023");
+    }
+    space();
+
+    if(date1 <= date4)
+    {
+        printSuccess("01/01/2024 es menor o igual que 15/08/2023");
+    }
+    else
+    {
+        printError("01/01/2024 no es menor o igual que 15/08/2023");
+    }
+
+    space();
+
+    printCentered("---Sumando dias a la fecha---");
+
+    Date date5 = date1.addDays(30);
+    print("Fecha original: ");
+    date1.printDate();
+    space();
+
+    print("Fecha sumando 30 dias: ");
+    date5.printDate();
+    space();
+
+    date5 = date1.addDays(365);
+    print("Fecha sumando 365 dias: ");
+    date5.printDate();
+    space();
+
+    date5 = date1.addDays(40);
+    print("Fecha sumando 40 dias: ");
+    date5.printDate();
+    space();
+
+    space();
+
+    printCentered("---Verificando si la fecha esta en el intervalo---");
+    if(date1.isInterval(date4, Date(10, 11, 2023)))
+    {
+        printSuccess("La fecha 01/01/2024 esta en el intervalo de 15/08/2023 y 10/11/2023");
+    }
+    else
+    {
+        printError("La fecha 01/01/2024 no esta en el intervalo de 15/08/2023 y 10/11/2023");
+    }
 
     space();
 
 }
 
 
+void reservationTesting()
+{
+    printTitle(" TESTING RESERVATION ", '=', 50);
+    printDivider('=', 50);
+
+    space();
+
+    Host host(
+        String("Carlos Gomez"),              
+        String("123456789"),                 
+        5,                                   
+        40                                    
+    );
+
+    Accommodation accommodation
+    (
+        1,                                 
+        String("Habitación Deluxe"),        
+        host,                              
+        String("Antioquia"),                
+        String("Apartamento"),              
+        String("Calle 123 #45-67"),         
+        150000                             
+    );
+
+    Reservation reservation(
+        1001,
+        &accommodation,
+        String("Juan Perez"),
+        Date(10, 6, 2024),
+        3,
+        String("Tarjeta de crédito"),
+        Date(5, 6, 2024),
+        450000,
+        String("Sin anotaciones")
+    );
+
+    reservation.GenerateVoucher();
+    space();
+}
+
+
 int main()
 {
 
+    
     dateTesting();
+
 
     return 0;
 
