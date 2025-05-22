@@ -7,7 +7,7 @@
 
 void print(const char *text)
 {
-    std::cout << text;
+    std::cout << text << '\n';
 }
 
 void printTitle(const char *title, char fill, unsigned int width)

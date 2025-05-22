@@ -1,11 +1,6 @@
 #include "DataStructure/list.h"
 #include "DataStructure/string.h"
 #include "Utils/ConUtils.h"
-#include "Utils/date.h"
-#include "Actors/reservation.h"
-#include "Actors/accommodations.h"
-#include "Actors/host.h"
-#include "Actors/guest.h"
 #include <iostream>
 
 
@@ -155,118 +150,6 @@ void stringTesting()
 
 }
 
-void dateTesting()
-{
-    Date date1(1, 1, 2024);
-    Date date2(29, 2, 2024);
-    Date date3(31, 4, 2024);
-    Date date4(15, 8, 2023);
-
-    Date dates[] = {date1, date2, date3, date4};
-
-    for(const Date& f : dates)
-    {
-        if(f.isValid())
-        {
-            printSuccess("Fecha valida: ");
-            f.printDate();
-        }
-        else
-        {
-            printError("Fecha invalida: ");
-            f.printDate();
-        }
-        space();
-    }
-
-    if(date4 < date1)
-    {
-        printSuccess("15/08/2023 es menor que 01/01/2024");
-    }
-    else
-    {
-        printError("15/08/2023 no es menor que 01/01/2024");
-    }
-    space();
-
-    if(date1 > date4)
-    {
-        printSuccess("01/01/2024 es mayor que 15/08/2023");
-    }
-    else
-    {
-        printError("01/01/2024 no es mayor que 15/08/2023");
-    }
-    space();
-
-    if(date1 == date4)
-    {
-        printSuccess("01/01/2024 es igual que 15/08/2023");
-    }
-    else
-    {
-        printError("01/01/2024 no es igual que 15/08/2023");
-    }
-    space();
-
-    if(date1 >= date4)
-    {
-        printSuccess("01/01/2024 es mayor o igual que 15/08/2023");
-    }
-    else
-    {
-        printError("01/01/2024 no es mayor o igual que 15/08/2023");
-    }
-    space();
-
-    if(date1 <= date4)
-    {
-        printSuccess("01/01/2024 es menor o igual que 15/08/2023");
-    }
-    else
-    {
-        printError("01/01/2024 no es menor o igual que 15/08/2023");
-    }
-
-    space();
-
-    printCentered("---Sumando dias a la fecha---");
-
-    Date date5 = date1.addDays(30);
-    print("Fecha original: ");
-    date1.printDate();
-    space();
-
-    print("Fecha sumando 30 dias: ");
-    date5.printDate();
-    space();
-
-    date5 = date1.addDays(365);
-    print("Fecha sumando 365 dias: ");
-    date5.printDate();
-    space();
-
-    date5 = date1.addDays(40);
-    print("Fecha sumando 40 dias: ");
-    date5.printDate();
-    space();
-
-    space();
-
-    printCentered("---Verificando si la fecha esta en el intervalo---");
-    if(date1.isInterval(date4, Date(10, 11, 2023)))
-    {
-        printSuccess("La fecha 01/01/2024 esta en el intervalo de 15/08/2023 y 10/11/2023");
-    }
-    else
-    {
-        printError("La fecha 01/01/2024 no esta en el intervalo de 15/08/2023 y 10/11/2023");
-    }
-
-    space();
-
-}
-
 
 void actorsTesting()
 {
@@ -364,7 +247,8 @@ void actorsTesting()
 
 int main()
 {
-    actorsTesting();
+    stringTesting();
+
 
     return 0;
 
