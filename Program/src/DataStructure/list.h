@@ -63,6 +63,9 @@ public:
         clear();
     }
 
+
+    /// * Methods
+
     // Insert a new element at the start of the list
     void insertStart(const T &value)
     {

@@ -268,12 +268,15 @@ void dateTesting()
 }
 
 
-void reservationTesting()
+void actorsTesting()
 {
-    printTitle(" TESTING RESERVATION ", '=', 50);
+    printTitle(" TESTING ACTORS", '=', 50);
     printDivider('=', 50);
 
     space();
+
+    Date date1(10, 5, 2024);
+    Date date2(15, 5, 2024);
 
     Host host(
         String("Carlos Gomez"),              
@@ -282,40 +285,86 @@ void reservationTesting()
         40                                    
     );
 
-    Accommodation accommodation
+    Accommodation *accommodation = new Accommodation
     (
         1,                                 
         String("Habitación Deluxe"),        
-        host,                              
+        &host,                              
         String("Antioquia"),                
         String("Apartamento"),              
         String("Calle 123 #45-67"),         
         150000                             
     );
 
-    Reservation reservation(
+    Guest guest("Juan perez", "172234556", 10, 100);
+
+
+    
+    Reservation res1(
         1001,
-        &accommodation,
-        String("Juan Perez"),
-        Date(10, 6, 2024),
+        accommodation,
+        guest.name,
+        date1,
         3,
-        String("Tarjeta de crédito"),
-        Date(5, 6, 2024),
+        "Tarjeta de credito",
+        date1,
         450000,
-        String("Sin anotaciones")
+        "Sin anotaciones"
+    );
+    Reservation res2(
+        1002, 
+        accommodation,
+        guest.name,
+        date2,
+        2,
+        "Tarjeta de credito",
+        date2,
+        200000,
+        "Sin anotaciones"
     );
 
-    reservation.GenerateVoucher();
+    guest.addReservation(&res1);
+    guest.addReservation(&res2);
+
+    printInfo("Huesped disponible 11/5/2024: ", 
+        (guest.checkAvailability(Date(11, 5 ,2024), 2) 
+        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
+    );
+
+    printInfo("Huesped disponible 20/5/2024: ", 
+        (guest.checkAvailability(Date(20, 5 ,2024), 2) 
+        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
+    );
+
+
+    guest.cancelReservation(1001);
+    printInfo("Huesped disponible 11/5/2024: ", 
+        (guest.checkAvailability(Date(11, 5 ,2024), 2) 
+        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
+    );
+
+    accommodation->reservations.insertEnd(&res2);
+    printInfo("Accommodation disponible 11/5/2024 por 2 días? ", 
+        (accommodation->isAvailable(Date(11, 5 ,2024), 2) 
+        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
+    );
+    printInfo("Accommodation disponible 20/5/2024 por 2 días? ", 
+        (accommodation->isAvailable(Date(20, 5 ,2024), 2) 
+        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
+    );
+
+
+    pause();
+
+    res1.GenerateVoucher();
+
     space();
 }
 
 
 int main()
 {
-
-    
-    dateTesting();
-
+    actorsTesting();
 
     return 0;
 

@@ -3,7 +3,6 @@
 
 #include "../DataStructure/list.h"
 #include "../DataStructure/string.h"
-#include "accommodations.h"
 
 class Accommodation;
 
@@ -21,8 +20,7 @@ public:
 
     /// * Constructors 
 
-    Host(const String& name, const String& document, int antiquity, int puntuation)
-        : name(name), document(document), antiquity(antiquity), puntuation(puntuation) {}
+    Host(const String& name, const String& document, int antiquity, int puntuation);
 
 
     /// * Methods
