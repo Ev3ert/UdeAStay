@@ -1,6 +1,7 @@
 #include "DataStructure/list.h"
 #include "DataStructure/string.h"
 #include "Utils/ConUtils.h"
+#include "Utils/date.h"
 #include <iostream>
 
 
@@ -150,105 +151,41 @@ void stringTesting()
 
 }
 
-
-void actorsTesting()
+void dateTesting()
 {
-    printTitle(" TESTING ACTORS", '=', 50);
-    printDivider('=', 50);
+    Date date1(1, 1, 2024);
+    Date date2(29, 2, 2024);
+    Date date3(31, 4, 2024);
+    Date date4(15, 8, 2023);
 
-    space();
+    Date dates[] = {date1, date2, date3, date4};
 
-    Date date1(10, 5, 2024);
-    Date date2(15, 5, 2024);
+    for(const Date& f : dates)
+    {
+        if(f.isValid())
+        {
+            printSuccess("Fecha valida: ");
+            print(f.getFormatDate().getRawData());
+        }
+        else
+        {
+            printError("Fecha invalida: ");
+            print(f.getFormatDate().getRawData());
+        }
+        space();
+    }
 
-    Host host(
-        String("Carlos Gomez"),              
-        String("123456789"),                 
-        5,                                   
-        40                                    
-    );
+    printInfo("1/1/2024 + 30 dias: ", date1.addDays(30).getFormatDate().getRawData());
+    printInfo("1/1/2024 + 24 dias: ", date1.addDays(24).getFormatDate().getRawData());
+    printInfo("1/1/2024 + 565 dias: ", date1.addDays(565).getFormatDate().getRawData());
 
-    Accommodation *accommodation = new Accommodation
-    (
-        1,                                 
-        String("Habitación Deluxe"),        
-        &host,                              
-        String("Antioquia"),                
-        String("Apartamento"),              
-        String("Calle 123 #45-67"),         
-        150000                             
-    );
-
-    Guest guest("Juan perez", "172234556", 10, 100);
-
-
-    
-    Reservation res1(
-        1001,
-        accommodation,
-        guest.name,
-        date1,
-        3,
-        "Tarjeta de credito",
-        date1,
-        450000,
-        "Sin anotaciones"
-    );
-    Reservation res2(
-        1002, 
-        accommodation,
-        guest.name,
-        date2,
-        2,
-        "Tarjeta de credito",
-        date2,
-        200000,
-        "Sin anotaciones"
-    );
-
-    guest.addReservation(&res1);
-    guest.addReservation(&res2);
-
-    printInfo("Huesped disponible 11/5/2024: ", 
-        (guest.checkAvailability(Date(11, 5 ,2024), 2) 
-        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
-    );
-
-    printInfo("Huesped disponible 20/5/2024: ", 
-        (guest.checkAvailability(Date(20, 5 ,2024), 2) 
-        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
-    );
-
-
-    guest.cancelReservation(1001);
-    printInfo("Huesped disponible 11/5/2024: ", 
-        (guest.checkAvailability(Date(11, 5 ,2024), 2) 
-        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
-    );
-
-    accommodation->reservations.insertEnd(&res2);
-    printInfo("Accommodation disponible 11/5/2024 por 2 días? ", 
-        (accommodation->isAvailable(Date(11, 5 ,2024), 2) 
-        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
-    );
-    printInfo("Accommodation disponible 20/5/2024 por 2 días? ", 
-        (accommodation->isAvailable(Date(20, 5 ,2024), 2) 
-        ? "\033[1;32mtrue\033[0m" : "\033[1;31mfalse\033[0m")
-    );
-
-
-    pause();
-
-    res1.GenerateVoucher();
-
-    space();
 }
 
 
 int main()
 {
-    stringTesting();
 
+    dateTesting();
 
     return 0;
 

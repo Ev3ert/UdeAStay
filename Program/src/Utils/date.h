@@ -7,9 +7,9 @@
 class Date
 {
 private:
-    int day;
-    int month;
-    int year;
+    unsigned int day;
+    unsigned int month;
+    unsigned int year;
 
 public:
 
@@ -35,20 +35,26 @@ public:
         return (day == other.day && month == other.month && year == other.year);
     }
 
-    bool operator>(const Date &other) const
+    bool operator !=(const Date &other) const
+    {
+        return !(*this == other);
+    }
+
+    bool operator >(const Date &other) const
     {
         return !(*this < other || *this == other);
     }
 
-    bool operator>=(const Date &other) const
+    bool operator <=(const Date &other) const
+    {
+        return (*this < other || *this == other);
+    }
+
+    bool operator >=(const Date &other) const
     {
         return !(*this < other);
     }
 
-    bool operator<=(const Date &other) const
-    {
-        return (*this < other || *this == other);
-    }
 
     /// * Methods
 
@@ -58,18 +64,12 @@ public:
         if(year == 0 || month < 1 || month > 12 || day < 1)
             return false;
 
-
         int maxDays = getDaysInMonth(month, year);
-
-        // Check for leap year
-        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
-            maxDays = 29;
 
         return day <= maxDays;
     }
 
-    // Print the date in a readable format
-    void printDate() const
+    String getFormatDate() const
     {
         static const String days[] = 
             { "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"};
@@ -77,55 +77,53 @@ public:
             { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
+        return days[getWeekDay()] + ", " +
+                   String::toString(day) + " de " +
+                   String(months[month - 1]) + " de " +
+                   String::toString(year);
 
-        std::cout << (days[getWeekDay()] + ", " + String::toString(day) + " de " 
-                    + months[month - 1] + " de " 
-                    + String::toString(year)).getRawData();
     }
 
-    // Funtion to get the day
     int getDay() const
     {
         return day;
     }
 
-    // Funtion to get the month
     int getMonth() const
     {
         return month;
     }
 
-    // Funtion to get the year
     int getYear() const
     {
         return year;
     }
 
-    
-    // Function to add days to this date returning a new date
+    // Funtion to add days to the date
     Date addDays(int days) const
     {
-        
         int d = day;
         int m = month;
         int y = year;
 
-        while(days > 0) {
-            int maxDay = getDaysInMonth(m, y);
+        while(days > 0)
+        {
+            int maxDays = getDaysInMonth(m, y);
 
-            int remaining = maxDay - d; // days left in the actual month
+            int remainingDays = maxDays - d;
 
-            if (days <= remaining) 
+            if(days <= remainingDays)
             {
                 d += days;
                 break;
-            } 
-            else 
+            }
+            else
             {
-                days -= (remaining + 1); // +1 to move to the next month
-                d = 1;
+                days -= (remainingDays + 1); // +1 to move to the next month
+                d = 1; // Reset day to 1
                 m++;
-                if (m > 12) {
+                if(m > 12)
+                {
                     m = 1;
                     y++;
                 }
@@ -135,26 +133,20 @@ public:
         return Date(d, m, y);
     }
 
-    // Function to check if this date is in the interval [start, end]
-    bool isInterval(const Date& start, const Date& end) const
-    {
-        if(start > end)
-        {
-            return false;
-        }
-        return (*this >= start && *this <= end);
-    }
 
-    // Function to get the number of days in a month
+    // Funtion to get the number of days in the month
     int getDaysInMonth(int month, int year) const
     {
-        static const int daysInMonth[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+        static const int daysInMonth[] = 
+            { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) {
-            return 29;
-        }
+        int maxDays = daysInMonth[month - 1];
 
-        return daysInMonth[month - 1];
+        // Check for leap year
+        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+            maxDays = 29;
+
+        return maxDays;
     }
 
     // Funtion to get the day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
@@ -166,7 +158,7 @@ public:
         int m = month;
         int y = year;
 
-        // Zeller's Congruence algorithm https://www.geeksforgeeks.org/zellers-congruence-find-day-date/
+        // Zeller's Congruence algorithm http://datagenetics.com/blog/november12019/index.html
         if (m < 3) {
             m += 12;
             y -= 1;
@@ -174,11 +166,12 @@ public:
 
 
         int k = y % 100;
-        int j = y / 100; 
+        int j = y / 100;
         int h = (d + 13*(m + 1)/5 + k + k/4 + j/4 + 5*j) % 7;
         return (h + 6) % 7;
     }
 
 };
+
 
 #endif // DATE_H

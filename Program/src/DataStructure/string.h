@@ -46,7 +46,7 @@ private:
             b++;
         }
 
-        return true;
+        return (*a == *b); // check if both strings end at the same time
     }
 
 public:
@@ -60,7 +60,7 @@ public:
 
     // Constructor to initialize the string with a value
     String(const char *str) 
-        : data(new char[strLength(str)]), length(strLength(str))
+        : data(new char[strLength(str) + 1]), length(strLength(str))
     {
         strCopy(data, str);
     }
@@ -68,7 +68,7 @@ public:
 
     // Copy constructor
     String(const String &other) 
-            : length(other.length), data(new char[other.length + 1])
+        : length(other.length), data(new char[other.length + 1])
     {
         strCopy(data, other.data);
     }
@@ -88,7 +88,7 @@ public:
         return *this;
     }
 
-    String operator+(const String &other)
+    String operator+(const String &other) const
     {
         unsigned int newLength = length + other.length;
         char *newData = new char[newLength + 1];
@@ -96,9 +96,19 @@ public:
         strCopy(newData, data);
         strCopy(newData + length, other.data);
 
-        String result(newData);
-        delete[] newData;
-        return result;
+        return String(newData); // Use the constructor whit char*
+    }
+
+    String operator+(const char *other) const
+    {
+        unsigned int newLength = length + strLength(other);
+        char *newData = new char[newLength + 1];
+
+        strCopy(newData, data);
+        strCopy(newData + length, other);
+
+        return String(newData);
+
     }
 
     bool operator==(const String &other) const
@@ -131,7 +141,7 @@ public:
     List<String> split(char delimiter) const
     {
         List<String> parts;
-        unsigned int start = 0;  // start position of the substring
+        unsigned int start {0};  // start position of the substring
         
         for (unsigned int i = 0; i <= length; i++)
         {
@@ -160,6 +170,42 @@ public:
         return parts;
     }
 
+
+    static String toString(int value)
+    {
+        
+        // Handle special case for 0
+        if (value == 0)
+        {
+            return String("0");
+        }
+
+        bool isNegative {false};
+        if(value < 0)
+        {
+            isNegative = true;
+            value = -value;
+        }
+
+        char buffer[12]; // Enough for 32-bit int 
+        int pos {11}; // Start from the end of the buffer
+
+        buffer[pos--] = '\0'; // Null-terminate the string
+
+        while(value > 0)
+        {
+            buffer[pos--] = '0' + (value % 10); // Convert digit to char
+            value /= 10; // Remove the last digit
+        }
+
+        if(isNegative)
+        {
+            buffer[pos--] = '-';
+        }
+
+        return String(buffer + pos + 1); // Create a String from the buffer
+
+    }
 
 };
 
