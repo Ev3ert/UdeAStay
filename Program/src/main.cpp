@@ -2,7 +2,10 @@
 #include "DataStructure/string.h"
 #include "Utils/ConUtils.h"
 #include "Utils/date.h"
+#include "Actors/accommodation.h"
+#include "Actors/reservation.h"
 #include <iostream>
+
 
 
 void listTesting()
@@ -181,11 +184,70 @@ void dateTesting()
 
 }
 
+void ActorsTesting() 
+{
+    printTitle(" TESTING ACTORS ", '=', 50);
+    printDivider('=', 50);
+
+    List<String> amenities;
+    amenities.insertEnd(String("WiFi"));
+    amenities.insertEnd(String("Piscina"));
+    amenities.insertEnd(String("Parking"));
+
+    Accommodation accommodation(
+        1001,
+        "Casa bonita",
+        nullptr, // Host pointer
+        "antioquia",
+        "Casa",
+        "Calle 123",
+        50000,
+        amenities
+    );
+
+    Date today(1, 6, 2024);
+    Date tomorrow = today.addDays(1);
+    Date nextWeek = today.addDays(6);
+    Date nextMonth = today.addDays(30);
+
+    Reservation res1(
+        1001,
+        &accommodation,
+        "Pedro Gomez",
+        nextWeek,
+        3,
+        "Efectivo",
+        today,
+        450000,
+        "Sin anotaciones"
+    );
+
+    accommodation.SetReservation(&res1);
+
+    printTitle("Pruebas de disponibilidad", '-');
+    bool available1 = accommodation.isAvailable(today, 3);
+    printInfo("Disponible del 1 al 3 de junio?: ", 
+              available1 ? "\033[1;32mSí\033[0m" : "\033[1;31mNo\033[0m");
+    
+    bool available2 = accommodation.isAvailable(nextWeek, 1);
+    printInfo("Disponible del 7 de junio?: ", 
+              available2 ? "\033[1;32mSí\033[0m" : "\033[1;31mNo\033[0m");
+    
+    bool available3 = accommodation.isAvailable(nextMonth, 5);
+    printInfo("Disponible del 1 al 5 de julio?: ", 
+              available3 ? "\033[1;32mSí\033[0m" : "\033[1;31mNo\033[0m");
+
+    space();
+
+    res1.generateVoucher();
+}
+
+
 
 int main()
 {
 
-    dateTesting();
+    ActorsTesting();
 
     return 0;
 

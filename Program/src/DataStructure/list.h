@@ -147,7 +147,7 @@ public:
     }
 
     // get the object by their position
-    T *get(unsigned int position)
+    T *get(unsigned int position) const
     {
         if (position >= elements)
         {
