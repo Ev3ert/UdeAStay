@@ -1,6 +1,7 @@
 #include "accommodation.h"
-#include "../Utils/date.h"
 #include "reservation.h"
+#include "host.h"
+#include "../Utils/date.h"
 #include "../Utils/ConUtils.h"
 
 /// * Constructors
@@ -42,6 +43,19 @@ bool Accommodation::isAvailable(const Date& date, int days) const
 
     return true;
 }
+
+void Accommodation::viewDetails() const
+{
+    printDivider('-');
+    printCentered(String("Alojamiento: ") + name);
+
+    printInfo("Anfitrion        : ", host->getName());
+    printInfo("Departamento     : ", department);
+    printInfo("Direccion        : ", address);
+    printInfo("Precio por noche : ", pricePerNight);
+    printInfo("Amenidades       : ", amenities);
+}
+
 
 bool Accommodation::deleteReservation(unsigned int id)
 {
@@ -85,6 +99,10 @@ const String& Accommodation::getType() const
 const String& Accommodation::getAddress() const
 {
     return address;
+}
+const unsigned int Accommodation::getPricePerNight() const
+{
+    return pricePerNight;   
 }
 const List<String>& Accommodation::getAmenities() const
 {

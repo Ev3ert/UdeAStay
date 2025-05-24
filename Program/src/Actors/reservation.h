@@ -31,7 +31,10 @@ public:
 
     /// * Methods
 
+    // Prints a voucher with reservation information
     void generateVoucher() const;
+
+    // Show some information from teh resercation
     void viewInfo() const;
 
     // Getters

@@ -1,6 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <iostream>
+
 template <typename T>
 class List
 {
@@ -53,6 +55,22 @@ public:
 
         return *this;
 
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const List<T>& list) {
+        Node* current = list.head;
+        
+        if (current) {
+            os << current->data;
+            current = current->next;
+        }
+        
+        while (current) {
+            os << ", " << current->data;
+            current = current->next;
+        }
+        
+        return os;
     }
 
 

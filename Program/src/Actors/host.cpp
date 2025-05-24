@@ -29,7 +29,7 @@ void Host::removeAccomodation(unsigned int id)
         }
     }
 
-    printError((String("No se encontró el alojamiento con ID: ") + String::toString(id)).getRawData());
+    printError(String("No se encontró el alojamiento con ID: ") + String::toString(id));
     space();
 }
 
@@ -45,8 +45,8 @@ void Host::cancelReservation(unsigned int id)
         }
     }
 
-    printError((String("No se encontró la reservación con ID: ")
-             + String::toString(id)).getRawData());
+    printError(String("No se encontró la reservación con ID: ")
+             + String::toString(id));
     space();
 }
 
@@ -62,7 +62,7 @@ void Host::consultReservations()
     {
         Accommodation *accommodation = *accommodations.get(i);
         
-        printTitle((String("Alojamiento ") + String::toString(i + 1)).getRawData(), '-', 50);
+        printTitle(String("Alojamiento ") + String::toString(i + 1), '-', 50);
         printDivider('-', 50);
         printInfo("Alojamiento: ", accommodation->getName());
         printCentered("---- Reservaciones ----", 50);
@@ -81,6 +81,28 @@ void Host::consultReservations()
             reservation->viewInfo();
         }
     }
+}
+
+
+// getters
+const String& Host::getDocument() const
+{
+    return Document;
+}
+
+const String& Host::getName() const
+{
+    return name;
+}
+
+int Host::getAntiquity() const
+{
+    return antiquity;
+}
+
+int Host::getPuntuation() const
+{
+    return puntuation;
 }
 
 

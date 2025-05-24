@@ -116,13 +116,18 @@ public:
         return strEqual(data, other.data);
     }
 
-    /// IOStream operator
 
     friend std::ostream &operator<<(std::ostream &os, const String &str)
     {
         os << str.data;
         return os;
     }
+
+    operator const char*() const
+    {
+        return data;
+    }
+
 
     // * Destructor
     ~String()

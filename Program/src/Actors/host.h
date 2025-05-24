@@ -26,16 +26,25 @@ public:
 
     /// * Methods
 
+    // add an accommodation to the list
     void addAccomodation(Accommodation *Accommodation);
 
+    // remove an accomodation by their ID
     void removeAccomodation(unsigned int id);
 
+    // cancel a reservation by their ID
     void cancelReservation(unsigned int id);
 
+    // Prints all reservation from all accommodations
     void consultReservations();
 
+    // Update de historic archive
     /// void updateHistoric(Date cutOffDate);
 
+    const String& getDocument() const;
+    const String& getName() const;
+    int getAntiquity() const;
+    int getPuntuation() const;
 
 };
 

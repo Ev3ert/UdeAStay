@@ -223,11 +223,21 @@ void ActorsTesting()
         3,
         "Efectivo",
         today,
-        450000,
+        accommodation.getPricePerNight() * 3,
         "Sin anotaciones"
     );
 
     accommodation.SetReservation(&res1);
+
+    printTitle("DETALLES DEL ALOJAMIENTO", '=');
+    accommodation.viewDetails();
+
+    space();
+
+    printTitle("DETALLES DEL RESERVA", '=');
+    res1.viewInfo();
+
+    space();
 
     printTitle("Pruebas de disponibilidad", '-');
     bool available1 = accommodation.isAvailable(today, 3);

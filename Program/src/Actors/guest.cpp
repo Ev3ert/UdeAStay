@@ -69,7 +69,7 @@ void Guest::viewReservations() const
     {
         Reservation* reservation = *reservations.get(i);
 
-        printTitle((String("Reserva #") + String::toString(i + 1)).getRawData(), '-', 30);
+        printTitle(String("Reserva #") + String::toString(i + 1), '-', 30);
         reservation->viewInfo();
     }
 }

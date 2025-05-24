@@ -19,26 +19,26 @@ void Reservation::generateVoucher() const
     space();
 
     printTitle("DETALLES DE LA RESERVA", '-', 40);
-    printInfo("ID de reserva    : ", String::toString(id).getRawData());
-    printInfo("Acomodación      : ", accommodation->getName().getRawData());
-    printInfo("Nombre huésped   : ", guestName.getRawData());
+    printInfo("ID de reserva    : ", String::toString(id));
+    printInfo("Acomodación      : ", accommodation->getName());
+    printInfo("Nombre huésped   : ", guestName);
     space();
 
     printTitle("FECHAS", '-', 40);
-    printInfo("Fecha inicio     : ", startDate.getFormatDate().getRawData());
-    printInfo("Fecha fin        : ", startDate.addDays(days - 1).getFormatDate().getRawData());
-    printInfo("Días reservados  : ", String::toString(days).getRawData());
+    printInfo("Fecha inicio     : ", startDate.getFormatDate());
+    printInfo("Fecha fin        : ", startDate.addDays(days - 1).getFormatDate());
+    printInfo("Días reservados  : ", String::toString(days));
     space();
 
     printTitle("INFORMACIÓN DE PAGO", '-', 40);
-    printInfo("Método de pago   : ", paymentMethod.getRawData());
-    printInfo("Fecha de pago    : ", paymentDate.getFormatDate().getRawData());
-    printInfo("Precio total     : $", String::toString(totalPrice).getRawData());
+    printInfo("Método de pago   : ", paymentMethod);
+    printInfo("Fecha de pago    : ", paymentDate.getFormatDate());
+    printInfo("Precio total     : $", String::toString(totalPrice));
     space();
 
     if (anotations.getRawData()[0] != '\0') {
         printTitle("ANOTACIONES", '-', 40);
-        printInfo("", anotations.getRawData());
+        printInfo("", anotations);
         space();
     }
 

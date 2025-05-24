@@ -36,10 +36,13 @@ public:
     // Check if the accommodation is available for the given date range
     bool isAvailable(const Date& startDate, int days) const;
     
+    // Funtion to view some details of the accommodation
     void viewDetails() const;
 
+    // Delete a reservation by their ID. return TRUE if it was cancel
     bool deleteReservation(unsigned int id);
 
+    
     // Getters
     unsigned int getId() const;
     const String& getName() const;
@@ -47,6 +50,7 @@ public:
     const String& getDepartment() const;
     const String& getType() const;
     const String& getAddress() const;
+    const unsigned int getPricePerNight() const;
     const List<String>& getAmenities() const;
     const List<Reservation*>& getReservations() const;
 
