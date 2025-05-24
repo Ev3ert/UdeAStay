@@ -4,6 +4,7 @@
 #include "Utils/date.h"
 #include "Actors/accommodation.h"
 #include "Actors/reservation.h"
+#include "Actors/guest.h"
 #include <iostream>
 
 
@@ -239,7 +240,42 @@ void ActorsTesting()
 
     space();
 
+    pause();
+
+    clearConsole();
+
+    printTitle("PRUEBAS DE HUÉSPED", '=', 50);
+
+    Guest guest("1234567890", "Juanchito perez", 3, 80);
+
+    printTitle("Agregando reservaciones", '-', 40);
+    guest.addReservation(&res1);
+    printSuccess("Reservación agregada exitosamente\n");
+
+    printTitle("Verificando disponibilidad", '-', 40);
+    
+    bool guestAvailable1 = guest.checkAvailability(today, 3);
+    printInfo("Disponible 1-3 junio?: ", 
+             guestAvailable1 ? "\033[1;32mSí\033[0m" : "\033[1;31mNo\033[0m");
+    
+    bool guestAvailable2 = guest.checkAvailability(nextWeek, 2);
+    printInfo("Disponible 7-8 junio?: ", 
+             guestAvailable2 ? "\033[1;32mSí\033[0m" : "\033[1;31mNo\033[0m");
+    
+    printTitle("Mostrando reservaciones", '-', 40);
+    guest.viewReservations();
+    
+    printTitle("Cancelando reservación", '-', 40);
+    guest.cancelReservation(1001);
+    printSuccess("Reservación cancelada\n");
+    
+    printTitle("Reservaciones después de cancelar", '-', 40);
+    guest.viewReservations();
+
+    space();
+    
     res1.generateVoucher();
+
 }
 
 

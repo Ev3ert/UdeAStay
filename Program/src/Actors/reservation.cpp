@@ -45,6 +45,21 @@ void Reservation::generateVoucher() const
     printDivider('=', 60);
 }
 // Getters
+unsigned int Reservation::getId() const
+{
+    return id;
+}
+
+const Accommodation* Reservation::getAccommodation() const
+{
+    return accommodation;
+}
+
+const String& Reservation::getGuestName() const
+{
+    return guestName;
+}
+
 const Date& Reservation::getStartDate() const
 {
     return startDate;
@@ -54,3 +69,25 @@ int Reservation::getDays() const
 {
     return days;
 }
+
+const String& Reservation::getPaymentMethod() const
+{
+    return paymentMethod;
+}
+
+const Date& Reservation::getPaymentDate() const
+{
+    return paymentDate;
+}
+
+unsigned long Reservation::getTotalPrice() const
+{
+    return totalPrice;
+}
+
+const String& Reservation::getAnotations() const
+{
+    return anotations;
+}
+
+

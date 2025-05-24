@@ -1,1 +1,79 @@
 #include "guest.h"
+#include "reservation.h"
+#include "accommodation.h"
+#include "../Utils/ConUtils.h"
+#include "../DataStructure/string.h"
+
+/// * Constructors
+
+Guest::Guest(const String& document, const String& name, int antiquity, int puntuation)
+    : Document(document), name(name), antiquity(antiquity), puntuation(puntuation) {}
+
+
+/// * Methods
+
+void Guest::addReservation(Reservation* reservation)
+{
+    reservations.insertEnd(reservation);
+}
+
+void Guest::cancelReservation(unsigned int id)
+{
+    for (unsigned int i = 0; i < reservations.size(); i++)
+    {
+        Reservation* reservation = *reservations.get(i);
+        if (reservation->getId() == id)
+        {
+            reservations.deleteByPosition(i);
+            return;
+        }
+    }
+}
+
+bool Guest::checkAvailability(Date date, int days) const
+{
+    if (days <= 0) return false;
+
+    Date endDate = date.addDays(days);
+
+    for (unsigned int i = 0; i < reservations.size(); i++)
+    {
+        // desreference the pointer to get the object address
+        Reservation *reservation = *reservations.get(i);
+        Date resStart = reservation->getStartDate();
+        Date resEnd = resStart.addDays(reservation->getDays());
+
+
+        // TODO: rewrite this condition to be more readable
+        if (!(endDate <= resStart || date >= resEnd))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void Guest::viewReservations() const
+{
+    if (reservations.isEmpty())
+    {
+        printError("No hay reservas para mostrar.");
+        return;
+    }
+
+    printTitle((String("Reservas de ") + name).getRawData(), '-', 40);
+    
+    for (unsigned int i = 0; i < reservations.size(); i++)
+    {
+        Reservation* reservation = *reservations.get(i);
+
+        printTitle((String("Reserva #") + String::toString(i + 1)).getRawData(), '-', 30);
+        printInfo("ID             : ", reservation->getId());
+        printInfo("Alojamiento    : ", reservation->getAccommodation()->getName().getRawData());
+        printInfo("Fecha inicio   : ", reservation->getStartDate().getFormatDate().getRawData());
+        printInfo("Días           : ", reservation->getDays());
+        printInfo("Precio total   : $", reservation->getTotalPrice());
+        space();
+    }
+}

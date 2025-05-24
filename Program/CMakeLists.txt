@@ -8,7 +8,7 @@ enable_testing()
 
 
 # Add the executable
-add_executable(UdeAStay src/main.cpp src/Utils/ConUtils.cpp src/Actors/accommodation.cpp src/Actors/reservation.cpp)
+add_executable(UdeAStay src/main.cpp src/Utils/ConUtils.cpp src/Actors/accommodation.cpp src/Actors/reservation.cpp src/Actors/guest.cpp)
 
 # Set the C++ standard to C++20
 set_property(TARGET UdeAStay PROPERTY CXX_STANDARD 20)
