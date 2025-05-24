@@ -1,6 +1,7 @@
 #include "accommodation.h"
 #include "../Utils/date.h"
 #include "reservation.h"
+#include "../Utils/ConUtils.h"
 
 /// * Constructors
 
@@ -41,6 +42,24 @@ bool Accommodation::isAvailable(const Date& date, int days) const
 
     return true;
 }
+
+bool Accommodation::deleteReservation(unsigned int id)
+{
+    for (unsigned int i = 0; i < reservations.size(); i++)
+    {
+        Reservation *reservation = *reservations.get(i);
+        if (reservation->getId() == id)
+        {
+            reservations.deleteByPosition(i);
+            printSuccess("Reservación eliminada exitosamente\n");
+            return true;
+        }
+    }
+    
+    return false;
+    space();
+}
+
 
 // Getters
 unsigned int Accommodation::getId() const

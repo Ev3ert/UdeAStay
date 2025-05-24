@@ -44,7 +44,20 @@ void Reservation::generateVoucher() const
 
     printDivider('=', 60);
 }
+
+void Reservation::viewInfo() const
+{
+    printInfo("ID             : ", id);
+    printInfo("Alojamiento    : ", accommodation->getName());
+    printInfo("Fecha inicio   : ", startDate.getFormatDate());
+    printInfo("Días           : ", days);
+    printInfo("Precio total   : $", totalPrice);
+    space();
+}
+
+
 // Getters
+
 unsigned int Reservation::getId() const
 {
     return id;
@@ -89,5 +102,7 @@ const String& Reservation::getAnotations() const
 {
     return anotations;
 }
+
+
 
 

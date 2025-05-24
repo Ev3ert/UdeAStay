@@ -54,6 +54,7 @@ bool Guest::checkAvailability(Date date, int days) const
     return true;
 }
 
+
 void Guest::viewReservations() const
 {
     if (reservations.isEmpty())
@@ -69,11 +70,27 @@ void Guest::viewReservations() const
         Reservation* reservation = *reservations.get(i);
 
         printTitle((String("Reserva #") + String::toString(i + 1)).getRawData(), '-', 30);
-        printInfo("ID             : ", reservation->getId());
-        printInfo("Alojamiento    : ", reservation->getAccommodation()->getName().getRawData());
-        printInfo("Fecha inicio   : ", reservation->getStartDate().getFormatDate().getRawData());
-        printInfo("Días           : ", reservation->getDays());
-        printInfo("Precio total   : $", reservation->getTotalPrice());
-        space();
+        reservation->viewInfo();
     }
+}
+
+// getters
+const String& Guest::getDocument() const
+{
+    return Document;
+}
+
+const String& Guest::getName() const
+{
+    return name;
+}
+
+int Guest::getAntiquity() const
+{
+    return antiquity;
+}
+
+int Guest::getPuntuation() const
+{
+    return puntuation;
 }

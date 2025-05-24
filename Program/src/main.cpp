@@ -5,6 +5,7 @@
 #include "Actors/accommodation.h"
 #include "Actors/reservation.h"
 #include "Actors/guest.h"
+#include "Actors/host.h"
 #include <iostream>
 
 
@@ -195,10 +196,13 @@ void ActorsTesting()
     amenities.insertEnd(String("Piscina"));
     amenities.insertEnd(String("Parking"));
 
+    Host host("9876543210", "Ana María Ospina", 12, 95); 
+    Guest guest("1234567890", "Juanchito perez", 3, 80);
+
     Accommodation accommodation(
         1001,
         "Casa bonita",
-        nullptr, // Host pointer
+        &host, 
         "antioquia",
         "Casa",
         "Calle 123",
@@ -214,7 +218,7 @@ void ActorsTesting()
     Reservation res1(
         1001,
         &accommodation,
-        "Pedro Gomez",
+        guest.getName(),
         nextWeek,
         3,
         "Efectivo",
@@ -246,8 +250,6 @@ void ActorsTesting()
 
     printTitle("PRUEBAS DE HUÉSPED", '=', 50);
 
-    Guest guest("1234567890", "Juanchito perez", 3, 80);
-
     printTitle("Agregando reservaciones", '-', 40);
     guest.addReservation(&res1);
     printSuccess("Reservación agregada exitosamente\n");
@@ -275,6 +277,65 @@ void ActorsTesting()
     space();
     
     res1.generateVoucher();
+
+    pause();
+    clearConsole();
+
+    List<String> amenities2;
+    amenities2.insertEnd(String("WiFi"));
+    amenities2.insertEnd(String("Cocina"));
+
+    Accommodation* accom2 = new Accommodation(
+        1002,
+        "Apartamento Central",
+        &host,
+        "Antioquia",
+        "Apartamento",
+        "Carrera 45 #23-12",
+        75000,
+        amenities2
+    );
+
+    printTitle("Agregando alojamientos", '-', 40);
+    host.addAccomodation(&accommodation); 
+    host.addAccomodation(accom2);       
+    printSuccess("Alojamientos agregados exitosamente\n");
+
+    Reservation res2(
+        1002,
+        accom2,
+        "María González",
+        nextMonth,  
+        4,
+        "Tarjeta",
+        today,  
+        300000,
+        "Vista a la ciudad"
+    );
+
+    accom2->SetReservation(&res2);
+
+
+    printTitle("Consultando todas las reservaciones", '-', 40);
+    host.consultReservations();
+    space();
+
+    printTitle("Cancelando reservación", '-', 40);
+    host.cancelReservation(1002);
+    printSuccess("Reservación cancelada\n");
+
+    printTitle("Consultando reservaciones después de cancelar", '-', 40);
+    host.consultReservations();
+    space();
+
+    printTitle("Eliminando alojamiento", '-', 40);
+    host.removeAccomodation(1002);
+    
+
+    printTitle("Consultando alojamientos después de eliminar", '-', 40);
+    host.consultReservations();
+
+    delete accom2;
 
 }
 

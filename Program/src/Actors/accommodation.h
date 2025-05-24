@@ -38,6 +38,8 @@ public:
     
     void viewDetails() const;
 
+    bool deleteReservation(unsigned int id);
+
     // Getters
     unsigned int getId() const;
     const String& getName() const;

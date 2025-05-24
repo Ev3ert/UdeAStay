@@ -32,6 +32,7 @@ public:
     /// * Methods
 
     void generateVoucher() const;
+    void viewInfo() const;
 
     // Getters
     unsigned int getId() const;
@@ -44,6 +45,7 @@ public:
     unsigned long getTotalPrice() const;
     const String& getAnotations() const;
     
+
 };
 
 
