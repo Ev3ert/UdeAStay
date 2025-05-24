@@ -15,20 +15,35 @@ Reservation::Reservation(unsigned int id, const Accommodation* accommodation, co
 
 void Reservation::generateVoucher() const
 {
-    printTitle("Comprobante de reserva", '-');
-    printInfo("ID de reserva: ", String::toString(id).getRawData());
-    printInfo("Acomodación: ", accommodation->getName().getRawData());
-    printInfo("Nombre del huésped: ", guestName.getRawData());
-    printInfo("Fecha de inicio: ", startDate.getFormatDate().getRawData());
-    printInfo("Fecha de fin: ", startDate.addDays(days - 1).getFormatDate().getRawData());
-    printInfo("Días reservados: ", String::toString(days).getRawData());
-    printInfo("Método de pago: ", paymentMethod.getRawData());
-    printInfo("Fecha de pago: ", paymentDate.getFormatDate().getRawData());
-    printInfo("Precio total: ", String::toString(totalPrice).getRawData());
-    printInfo("Anotaciones: ", anotations.getRawData());
+    printTitle("COMPROBANTE DE RESERVA", '=', 60);
+    space();
 
+    printTitle("DETALLES DE LA RESERVA", '-', 40);
+    printInfo("ID de reserva    : ", String::toString(id).getRawData());
+    printInfo("Acomodación      : ", accommodation->getName().getRawData());
+    printInfo("Nombre huésped   : ", guestName.getRawData());
+    space();
+
+    printTitle("FECHAS", '-', 40);
+    printInfo("Fecha inicio     : ", startDate.getFormatDate().getRawData());
+    printInfo("Fecha fin        : ", startDate.addDays(days - 1).getFormatDate().getRawData());
+    printInfo("Días reservados  : ", String::toString(days).getRawData());
+    space();
+
+    printTitle("INFORMACIÓN DE PAGO", '-', 40);
+    printInfo("Método de pago   : ", paymentMethod.getRawData());
+    printInfo("Fecha de pago    : ", paymentDate.getFormatDate().getRawData());
+    printInfo("Precio total     : $", String::toString(totalPrice).getRawData());
+    space();
+
+    if (anotations.getRawData()[0] != '\0') {
+        printTitle("ANOTACIONES", '-', 40);
+        printInfo("", anotations.getRawData());
+        space();
+    }
+
+    printDivider('=', 60);
 }
-
 // Getters
 const Date& Reservation::getStartDate() const
 {
