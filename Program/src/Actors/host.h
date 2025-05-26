@@ -12,8 +12,8 @@ class Host
 private:
     /// * Propierties
 
-    String Document;
     String name;
+    String Document;
     int antiquity; // in months
     int puntuation; 
 
@@ -45,6 +45,9 @@ public:
     const String& getName() const;
     int getAntiquity() const;
     int getPuntuation() const;
+
+    // Setters
+    void setAccommodations(const List<Accommodation*>& accommodations);
 
 };
 

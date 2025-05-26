@@ -49,7 +49,7 @@ void Accommodation::viewDetails() const
     printDivider('-');
     printCentered(String("Alojamiento: ") + name);
 
-    ///printInfo("Anfitrion        : ", host->getName());
+    printInfo("Anfitrion        : ", host->getName());
     printInfo("Departamento     : ", department);
     printInfo("Direccion        : ", address);
     printInfo("Precio por noche : ", pricePerNight);
@@ -119,5 +119,10 @@ const List<Reservation*>& Accommodation::getReservations() const
 void Accommodation::SetReservation(Reservation* reservation)
 {
     reservations.insertEnd(reservation);
+}
+
+void Accommodation::setHost(const Host* newHost)
+{
+    host = newHost;
 }
 

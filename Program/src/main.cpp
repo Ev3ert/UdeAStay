@@ -21,6 +21,8 @@ int main()
 {
 
     loadAccomodations(accommodations);
+    loadReservations(reservations);
+    loadHost(hosts, accommodations);
 
     for(unsigned int i = 0; i < accommodations.size(); i++)
     {
@@ -28,15 +30,35 @@ int main()
         accommodation->viewDetails();
     }
 
+    pause();
+    clearConsole();
+
 
     printTitle("loading reservations", '*', 50);
-    loadReservations(reservations);
 
     for(unsigned int i = 0; i < reservations.size(); i++)
     {
         Reservation *reservation = *reservations.get(i);
         reservation->generateVoucher();
     }
+
+    pause();
+    clearConsole();
+
+    printTitle("loading hosts", '*', 50);
+    for(unsigned int i = 0; i < hosts.size(); i++)
+    {
+        Host *host = *hosts.get(i);
+        printInfo("Host: ", host->getName());
+        printInfo("Document: ", host->getDocument());
+        printInfo("Antiquity: ", String::toString(host->getAntiquity()));
+        printInfo("Puntuation: ", String::toString(host->getPuntuation()));
+
+        host->consultReservations();
+        space();
+    }
+
+    
     
 
     return 0;

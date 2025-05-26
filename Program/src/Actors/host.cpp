@@ -5,7 +5,7 @@
 
 /// * Constructors
 
-Host::Host(const String& document, const String& name, int antiquity, int puntuation)
+Host::Host(const String& name, const String& document, int antiquity, int puntuation)
     : Document(document), name(name), antiquity(antiquity), puntuation(puntuation) {}
 
 
@@ -103,6 +103,13 @@ int Host::getAntiquity() const
 int Host::getPuntuation() const
 {
     return puntuation;
+}
+
+// Setters
+
+void Host::setAccommodations(const List<Accommodation*>& accommodations)
+{
+    this->accommodations = accommodations;
 }
 
 

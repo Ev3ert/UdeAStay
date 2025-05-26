@@ -57,6 +57,7 @@ public:
     // Setters
     void SetReservations(const List<Reservation*>& reservations);
     void SetReservation(Reservation* reservation);
+    void setHost(const Host* newHost);
 
 };
 #endif // ACCOMODATION_H

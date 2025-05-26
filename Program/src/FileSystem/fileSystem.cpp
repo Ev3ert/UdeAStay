@@ -96,3 +96,50 @@ void loadReservations(List<Reservation*>& allReservations)
     resArc.close();
 }
 
+void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
+{
+    std::ifstream hostArc(archiveHost);
+
+    String line;
+    List<String> data;
+
+    if (!hostArc.is_open()) {
+        printError("No se pudo abrir el archivo.\n");
+        return;
+    }
+
+    while(String::getLine(hostArc, line))
+    {
+        data = line.split('|');
+
+        // Create new Host object in heap
+        Host* newHost = new Host(
+            *data.get(0),                             // Name
+            *data.get(1),                             // Document
+            String::toInt(data.get(2)->getRawData()), // Antiquity in months
+            String::toInt(data.get(3)->getRawData())  // Punctuation
+        );
+
+
+        // Set the accommodations list for the host
+        List<String> accommodationIds = data.get(4)->split(',');
+        for (unsigned int i = 0; i < accommodationIds.size(); i++)
+        {
+            int id = String::toInt(*accommodationIds.get(i));
+            for (unsigned int j = 0; j < accommodations.size(); j++)
+            {
+                Accommodation* accommodation = *accommodations.get(j);
+                if (accommodation->getId() == id)
+                {
+                    newHost->addAccomodation(accommodation);
+                    accommodation->setHost(newHost); // Set the host for the accommodation
+                    break; // Found the accommodation, no need to continue
+                }
+            }
+        }
+
+        allHosts.insertEnd(newHost);
+    }
+
+    hostArc.close();
+}
