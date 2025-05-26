@@ -49,7 +49,7 @@ void Accommodation::viewDetails() const
     printDivider('-');
     printCentered(String("Alojamiento: ") + name);
 
-    printInfo("Anfitrion        : ", host->getName());
+    ///printInfo("Anfitrion        : ", host->getName());
     printInfo("Departamento     : ", department);
     printInfo("Direccion        : ", address);
     printInfo("Precio por noche : ", pricePerNight);

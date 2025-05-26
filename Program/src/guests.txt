@@ -1,0 +1,3 @@
+789456|Carlos Díaz|18|5
+321789|María Luna|6|4
+987654|Pedro Salazar|30|2

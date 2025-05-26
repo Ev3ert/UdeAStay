@@ -1,0 +1,3 @@
+Juan Pérez|123456|24|5
+Ana Torres|654321|12|4
+Luis Gómez|111222|36|3

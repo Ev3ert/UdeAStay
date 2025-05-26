@@ -253,6 +253,12 @@ build CMakeFiles/UdeAStay.dir/src/Actors/host.cpp.o: CXX_COMPILER__UdeAStay_unsc
   OBJECT_DIR = CMakeFiles/UdeAStay.dir
   OBJECT_FILE_DIR = CMakeFiles/UdeAStay.dir/src/Actors
 
+build CMakeFiles/UdeAStay.dir/src/FileSystem/fileSystem.cpp.o: CXX_COMPILER__UdeAStay_unscanned_Debug /home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/FileSystem/fileSystem.cpp || cmake_object_order_depends_target_UdeAStay
+  DEP_FILE = CMakeFiles/UdeAStay.dir/src/FileSystem/fileSystem.cpp.o.d
+  FLAGS = -g -std=gnu++20
+  OBJECT_DIR = CMakeFiles/UdeAStay.dir
+  OBJECT_FILE_DIR = CMakeFiles/UdeAStay.dir/src/FileSystem
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target UdeAStay
@@ -261,7 +267,7 @@ build CMakeFiles/UdeAStay.dir/src/Actors/host.cpp.o: CXX_COMPILER__UdeAStay_unsc
 #############################################
 # Link the executable UdeAStay
 
-build UdeAStay: CXX_EXECUTABLE_LINKER__UdeAStay_Debug CMakeFiles/UdeAStay.dir/src/main.cpp.o CMakeFiles/UdeAStay.dir/src/Utils/ConUtils.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/accommodation.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/reservation.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/guest.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/host.cpp.o
+build UdeAStay: CXX_EXECUTABLE_LINKER__UdeAStay_Debug CMakeFiles/UdeAStay.dir/src/main.cpp.o CMakeFiles/UdeAStay.dir/src/Utils/ConUtils.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/accommodation.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/reservation.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/guest.cpp.o CMakeFiles/UdeAStay.dir/src/Actors/host.cpp.o CMakeFiles/UdeAStay.dir/src/FileSystem/fileSystem.cpp.o
   DEP_FILE = CMakeFiles/UdeAStay.dir/link.d
   FLAGS = -g
   LINK_FLAGS = -Wl,--dependency-file=CMakeFiles/UdeAStay.dir/link.d

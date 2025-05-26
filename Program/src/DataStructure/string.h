@@ -2,6 +2,7 @@
 #define STRING_H
 
 #include <iostream>
+#include <fstream>
 #include "list.h"
 
 class String
@@ -128,6 +129,25 @@ public:
         return data;
     }
 
+    String& operator+=(char c)
+    {
+        char str[2] = {c, '\0'}; 
+        *this = *this + str;  
+        return *this;
+    }
+
+    String& operator+=(String &other)
+    {
+        *this = *this + other;  
+        return *this;
+    }
+
+    String &operator+=(const char *other)
+    {
+        *this = *this + other;  
+        return *this;
+    }
+
 
     // * Destructor
     ~String()
@@ -183,7 +203,7 @@ public:
         return parts;
     }
 
-
+    // Funtion to convert a integer to String Type
     static String toString(int value)
     {
         
@@ -219,6 +239,72 @@ public:
         return String(buffer + pos + 1); // Create a String from the buffer
 
     }
+    
+    static int toInt(const String &str)
+    {
+        int value {0};
+        int sing {1};
+        unsigned int i {0};
+
+        if(str.data[0] == '-')
+        {
+            sing = -1;
+            i++;
+        }
+        else if(str.data[0] == '+')
+        {
+            i++;
+        }
+
+        while(str.data[i] != '\0')
+        {
+            if(str.data[i] >= '0' || str.data[i] <= '9')
+            {
+                value = value * 10 + (str.data[i] - '0');
+            }
+            else
+            {
+                break; // Stop if a non-digit character is found
+            }
+            i++;
+
+        }
+
+        return value * sing;
+
+
+        
+    }
+
+    // Funtion to clear de String
+    void clear()
+    {
+        delete[] data;
+        data = new char[1];
+        data[0] = '/0';
+        length = 0;
+    }
+
+
+    // The same funtionality of std::getLine but with custom string
+    static bool getLine(std::istream& in, String& output)
+    {
+        output.clear();
+        char ch;
+        bool read {false};
+
+        while(in.get(ch))
+        {
+            if(ch == '\n') break;
+            output += ch;
+            read = true;
+
+        }
+
+        return read;
+    }
+
+
 
 };
 
