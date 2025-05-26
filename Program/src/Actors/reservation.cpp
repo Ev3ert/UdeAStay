@@ -18,26 +18,26 @@ void Reservation::generateVoucher() const
     printTitle("COMPROBANTE DE RESERVA", '=', 60);
     space();
 
-    printTitle("DETALLES DE LA RESERVA", '-', 40);
+    printTitle("DETALLES DE LA RESERVA", '-', 60);
     printInfo("ID de reserva    : ", String::toString(id));
-    printInfo("Acomodación      : ", accommodation->getName());
+    ///printInfo("Acomodación      : ", accommodation->getName());
     printInfo("Nombre huésped   : ", guestName);
     space();
 
-    printTitle("FECHAS", '-', 40);
+    printTitle("FECHAS", '-', 60);
     printInfo("Fecha inicio     : ", startDate.getFormatDate());
     printInfo("Fecha fin        : ", startDate.addDays(days - 1).getFormatDate());
     printInfo("Días reservados  : ", String::toString(days));
     space();
 
-    printTitle("INFORMACIÓN DE PAGO", '-', 40);
+    printTitle("INFORMACIÓN DE PAGO", '-', 60);
     printInfo("Método de pago   : ", paymentMethod);
     printInfo("Fecha de pago    : ", paymentDate.getFormatDate());
     printInfo("Precio total     : $", String::toString(totalPrice));
     space();
 
     if (anotations.getRawData()[0] != '\0') {
-        printTitle("ANOTACIONES", '-', 40);
+        printTitle("ANOTACIONES", '-', 60);
         printInfo("", anotations);
         space();
     }

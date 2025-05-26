@@ -27,6 +27,16 @@ int main()
         Accommodation *accommodation = *accommodations.get(i);
         accommodation->viewDetails();
     }
+
+
+    printTitle("loading reservations", '*', 50);
+    loadReservations(reservations);
+
+    for(unsigned int i = 0; i < reservations.size(); i++)
+    {
+        Reservation *reservation = *reservations.get(i);
+        reservation->generateVoucher();
+    }
     
 
     return 0;
