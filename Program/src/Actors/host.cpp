@@ -6,7 +6,7 @@
 /// * Constructors
 
 Host::Host(const String& name, const String& document, int antiquity, int puntuation)
-    : Document(document), name(name), antiquity(antiquity), puntuation(puntuation) {}
+    : name(name), document(document),  antiquity(antiquity), puntuation(puntuation) {}
 
 
 /// * Methods
@@ -87,7 +87,7 @@ void Host::consultReservations()
 // getters
 const String& Host::getDocument() const
 {
-    return Document;
+    return document;
 }
 
 const String& Host::getName() const
@@ -103,6 +103,11 @@ int Host::getAntiquity() const
 int Host::getPuntuation() const
 {
     return puntuation;
+}
+
+List<Accommodation*> Host::getAccommodations() const
+{
+    return accommodations;
 }
 
 // Setters

@@ -242,6 +242,11 @@ public:
     
     static int toInt(const String &str)
     {
+        if (str.length == 0)
+        {
+            return 0;
+        }
+
         int value {0};
         int sing {1};
         unsigned int i {0};

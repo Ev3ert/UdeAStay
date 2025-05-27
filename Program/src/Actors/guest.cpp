@@ -6,8 +6,8 @@
 
 /// * Constructors
 
-Guest::Guest(const String& document, const String& name, int antiquity, int puntuation)
-    : document(document), name(name), antiquity(antiquity), puntuation(puntuation) {}
+Guest::Guest(const String& name, const String& document, int antiquity, int puntuation)
+    : name(name), document(document), antiquity(antiquity), puntuation(puntuation) {}
 
 
 /// * Methods

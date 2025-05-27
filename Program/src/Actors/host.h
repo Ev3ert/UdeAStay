@@ -13,7 +13,7 @@ private:
     /// * Propierties
 
     String name;
-    String Document;
+    String document;
     int antiquity; // in months
     int puntuation; 
 
@@ -45,6 +45,7 @@ public:
     const String& getName() const;
     int getAntiquity() const;
     int getPuntuation() const;
+    List<Accommodation*> getAccommodations() const;
 
     // Setters
     void setAccommodations(const List<Accommodation*>& accommodations);

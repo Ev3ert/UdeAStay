@@ -20,7 +20,7 @@ private:
 public:
     /// * Constructors
 
-    Guest(const String& document, const String& name, int antiquity, int puntuation);
+    Guest(const String& name, const String& document, int antiquity, int puntuation);
 
     /// * Methods
 

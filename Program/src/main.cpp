@@ -23,7 +23,8 @@ int main()
     loadAccomodations(accommodations);
     loadReservations(reservations, accommodations);
     loadHost(hosts, accommodations);
-    loadGuest(guests, reservations);    
+    loadGuest(guests, reservations);  
+    
 
     for(unsigned int i = 0; i < accommodations.size(); i++)
     {
@@ -75,6 +76,26 @@ int main()
         space();
     }
 
+    pause();
+    clearConsole();
+
+    Host* host = new Host("Juancho polo", "893893289", 7, 9);
+    hosts.insertEnd(host);
+
+    List<String> amenities;
+    amenities.insertEnd("le dan las buenas noches");
+
+    Accommodation* newAccom = new Accommodation(999, "Hotel Nuevo", host, 
+                                                   "Bogotá", "Hotel", "Calle 123", 
+                                                   150000, amenities);
+
+    accommodations.insertEnd(newAccom);
+    host->addAccomodation(newAccom);
+
+    saveAllData(accommodations, reservations, hosts, guests);
+
+
+    cleanupMemory(accommodations, reservations, hosts, guests);
 
 
     return 0;
