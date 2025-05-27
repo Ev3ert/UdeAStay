@@ -7,7 +7,7 @@
 
 void print(const char *text)
 {
-    std::cout << text << '\n';
+    std::cout << text;
 }
 
 void printTitle(const char *title, char fill, unsigned int width)
@@ -95,20 +95,19 @@ void space()
 
 /// * ------ reading functions ------
 
-void readLine(char *buffer, unsigned int size)
+bool readLine(char *buffer, unsigned int size)
 {
-    std::cin.getline(buffer, size);
+    std::cin.clear();
+    
+    std::cin.getline(buffer, size, '\n');
 
     if(std::cin.fail())
     {
-        clearFail(); 
+        clearFail();
+        return false;   
     }
-    else
-    {
-        flushInput();
-    }
-
-
+    
+    return true;        
 }
 
 

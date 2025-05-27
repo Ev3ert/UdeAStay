@@ -37,7 +37,7 @@ void space();
 /// * ------ reading functions ------
 
 // Funtion to read a line from the console whit spaces 
-void readLine(char *buffer, unsigned int size);
+bool readLine(char *buffer, unsigned int size);
 
 // Function to read an integer from the console and handle errors
 int readInt();
