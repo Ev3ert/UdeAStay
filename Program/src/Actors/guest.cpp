@@ -7,7 +7,7 @@
 /// * Constructors
 
 Guest::Guest(const String& document, const String& name, int antiquity, int puntuation)
-    : Document(document), name(name), antiquity(antiquity), puntuation(puntuation) {}
+    : document(document), name(name), antiquity(antiquity), puntuation(puntuation) {}
 
 
 /// * Methods
@@ -77,7 +77,7 @@ void Guest::viewReservations() const
 // getters
 const String& Guest::getDocument() const
 {
-    return Document;
+    return document;
 }
 
 const String& Guest::getName() const

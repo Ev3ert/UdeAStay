@@ -55,8 +55,8 @@ public:
     const List<Reservation*>& getReservations() const;
 
     // Setters
-    void SetReservations(const List<Reservation*>& reservations);
-    void SetReservation(Reservation* reservation);
+    void setReservations(const List<Reservation*>& reservations);
+    void setReservation(Reservation* reservation);
     void setHost(const Host* newHost);
 
 };

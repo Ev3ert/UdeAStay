@@ -16,9 +16,13 @@ const String archiveGuest = "/home/evert/Documents/Academico/Informatica_2/UdeAS
 
 
 void loadAccomodations(List<Accommodation*>& allAccommodations);
-void loadReservations(List<Reservation*>& allReservations);
+
+void loadReservations(List<Reservation*>& allReservations,
+     const List<Accommodation*>& allAccommodations);
+
 void loadHost(List<Host*>& allHost, const List<Accommodation*>& accommodations);
-void loadGuest(List<Guest*>& allGuest);
+
+void loadGuest(List<Guest*>& allGuest, List<Reservation*>& allReservations);
 
 void saveAccomodations();
 void saveReservations();

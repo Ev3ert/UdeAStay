@@ -47,6 +47,10 @@ public:
     const Date& getPaymentDate() const;
     unsigned long getTotalPrice() const;
     const String& getAnotations() const;
+
+
+    // setters
+    void setAccomodation(const Accommodation* newAccommodation);
     
 
 };

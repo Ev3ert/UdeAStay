@@ -20,7 +20,7 @@ void Reservation::generateVoucher() const
 
     printTitle("DETALLES DE LA RESERVA", '-', 60);
     printInfo("ID de reserva    : ", String::toString(id));
-    ///printInfo("Acomodación      : ", accommodation->getName());
+    printInfo("Acomodación      : ", accommodation->getName());
     printInfo("Nombre huésped   : ", guestName);
     space();
 
@@ -102,6 +102,15 @@ const String& Reservation::getAnotations() const
 {
     return anotations;
 }
+
+
+// setters
+
+void Reservation::setAccomodation(const Accommodation* newAccommodation) 
+{
+    accommodation = newAccommodation;
+}
+
 
 
 

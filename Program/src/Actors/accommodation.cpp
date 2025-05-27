@@ -116,7 +116,7 @@ const List<Reservation*>& Accommodation::getReservations() const
 
 // Setters
 
-void Accommodation::SetReservation(Reservation* reservation)
+void Accommodation::setReservation(Reservation* reservation)
 {
     reservations.insertEnd(reservation);
 }

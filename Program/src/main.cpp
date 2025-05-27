@@ -21,8 +21,9 @@ int main()
 {
 
     loadAccomodations(accommodations);
-    loadReservations(reservations);
+    loadReservations(reservations, accommodations);
     loadHost(hosts, accommodations);
+    loadGuest(guests, reservations);    
 
     for(unsigned int i = 0; i < accommodations.size(); i++)
     {
@@ -58,8 +59,23 @@ int main()
         space();
     }
 
-    
-    
+    pause();
+    clearConsole();
+    printTitle("loading guests", '*', 50);
+
+    for(unsigned int i = 0; i < guests.size(); i++)
+    {
+        Guest *guest = *guests.get(i);
+        printInfo("Guest: ", guest->getName());
+        printInfo("Document: ", guest->getDocument());
+        printInfo("Antiquity: ", String::toString(guest->getAntiquity()));
+        printInfo("Puntuation: ", String::toString(guest->getPuntuation()));
+
+        guest->viewReservations();
+        space();
+    }
+
+
 
     return 0;
 

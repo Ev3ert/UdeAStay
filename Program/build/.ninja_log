@@ -61,3 +61,13 @@
 1890	2121	1748295468867166853	UdeAStay	c01ca4a55f710eed
 3	1797	1748295564861491189	CMakeFiles/UdeAStay.dir/src/main.cpp.o	ae5ea69b0b0fdac3
 1797	1992	1748295566655515939	UdeAStay	c01ca4a55f710eed
+6	2253	1748302310759930708	CMakeFiles/UdeAStay.dir/src/main.cpp.o	ae5ea69b0b0fdac3
+7	2266	1748302310760930714	CMakeFiles/UdeAStay.dir/src/FileSystem/fileSystem.cpp.o	e3ca08b2a4482103
+2266	2484	1748302313020951846	UdeAStay	c01ca4a55f710eed
+7	4076	1748303852946107427	CMakeFiles/UdeAStay.dir/src/Actors/reservation.cpp.o	89b6297d2a56adfb
+6	4593	1748303852945107416	CMakeFiles/UdeAStay.dir/src/Actors/accommodation.cpp.o	b3d4380f5c1ad2b5
+5	4849	1748303852944107405	CMakeFiles/UdeAStay.dir/src/main.cpp.o	ae5ea69b0b0fdac3
+11	5044	1748303852950107472	CMakeFiles/UdeAStay.dir/src/Actors/guest.cpp.o	ad9acb084d9b99ce
+13	5049	1748303852952107494	CMakeFiles/UdeAStay.dir/src/FileSystem/fileSystem.cpp.o	e3ca08b2a4482103
+12	5159	1748303852951107483	CMakeFiles/UdeAStay.dir/src/Actors/host.cpp.o	e0a24660e15cd331
+5160	5505	1748303858099164501	UdeAStay	c01ca4a55f710eed

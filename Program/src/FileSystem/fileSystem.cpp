@@ -10,6 +10,12 @@
 #include <iostream>
 #include <fstream>
 
+/*
+This Script not is the maraville in performance, 
+but it is easy to understand.
+*/
+
+
 
 void loadAccomodations(List<Accommodation*>& allAccommodations)
 {
@@ -49,7 +55,7 @@ void loadAccomodations(List<Accommodation*>& allAccommodations)
 }
 
 
-void loadReservations(List<Reservation*>& allReservations)
+void loadReservations(List<Reservation*>& allReservations, const List<Accommodation*>& allAccommodations)
 {
     std::ifstream resArc(archiveReservations);
 
@@ -65,32 +71,49 @@ void loadReservations(List<Reservation*>& allReservations)
     {
         data = line.split('|');
 
+        List<String> startSplit = data.get(3)->split('/');
         Date startDate(
-            String::toInt(data.get(2)->split('/').get(0)->getRawData()), // Day
-            String::toInt(data.get(2)->split('/').get(1)->getRawData()), // Month
-            String::toInt(data.get(2)->split('/').get(2)->getRawData())  // Year
+            String::toInt(startSplit.get(0)->getRawData()),  // Day
+            String::toInt(startSplit.get(1)->getRawData()),  // Month
+            String::toInt(startSplit.get(2)->getRawData())   // Year
         );
 
+        List<String> paymentSplit = data.get(6)->split('/');
         Date paymentDate(
-            String::toInt(data.get(5)->split('/').get(0)->getRawData()), // Day
-            String::toInt(data.get(5)->split('/').get(1)->getRawData()), // Month
-            String::toInt(data.get(5)->split('/').get(2)->getRawData())  // Year
+            String::toInt(paymentSplit.get(0)->getRawData()), // Day
+            String::toInt(paymentSplit.get(1)->getRawData()), // Month
+            String::toInt(paymentSplit.get(2)->getRawData())  // Year
         );
 
         // Create new Reservation object in heap
         Reservation* newReservation = new Reservation(
             String::toInt(data.get(0)->getRawData()), // ID
             nullptr,                                  // Accommodation (will be set later)
-            *data.get(1),                             // Guest name
+            *data.get(2),                             // Guest name
             startDate,                                // Start date
-            String::toInt(data.get(3)->getRawData()), // Days
-            *data.get(4),                             // Payment method
+            String::toInt(data.get(4)->getRawData()), // Days
+            *data.get(5),                             // Payment method
             paymentDate,                              // Payment date
-            String::toInt(data.get(6)->getRawData()), // Total price
-            *data.get(7)                              // Annotations
+            String::toInt(data.get(7)->getRawData()), // Total price
+            *data.get(8)                              // Annotations
         );
 
         allReservations.insertEnd(newReservation);
+
+
+        // Set the accommodation for the reservation
+        unsigned int accommodationId = String::toInt(data.get(1)->getRawData());
+        for (unsigned int i = 0; i < allAccommodations.size(); i++)  
+        {
+            Accommodation* accommodation = *allAccommodations.get(i);
+            if (accommodation->getId() == accommodationId)
+            {
+                newReservation->setAccomodation(accommodation);
+                accommodation->setReservation(newReservation);
+                break; // Found the accommodation, no need to continue
+            }
+        }
+        
     }
 
     resArc.close();
@@ -143,3 +166,48 @@ void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
 
     hostArc.close();
 }
+
+void loadGuest(List<Guest*>& allGuests, List<Reservation*>& allReservations)
+{
+    std::ifstream guestArc(archiveGuest);
+
+    String line;
+    List<String> data;
+
+    if (!guestArc.is_open()) {
+        printError("No se pudo abrir el archivo.\n");
+        return;
+    }
+
+    while(String::getLine(guestArc, line))
+    {
+        data = line.split('|');
+
+        // Create new Guest object in heap
+        Guest* newGuest = new Guest(
+            *data.get(0),                             // Name
+            *data.get(1),                             // Document
+            String::toInt(data.get(2)->getRawData()), // Antiquity
+            String::toInt(data.get(3)->getRawData())  // Punctuation
+        );
+
+        allGuests.insertEnd(newGuest);
+
+        // load reservations for the guest
+        for (unsigned int i = 0; i < allReservations.size(); i++)
+        {
+            Reservation* reservation = *allReservations.get(i);
+            if (reservation->getGuestName() == newGuest->getName())
+            {
+                newGuest->addReservation(reservation);
+            }
+        }
+        
+
+    }
+
+
+    guestArc.close();
+}
+
+

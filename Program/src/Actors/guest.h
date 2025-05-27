@@ -11,8 +11,8 @@ class Guest
 private:
     /// * Properties
 
-    String Document;
     String name;
+    String document;
     int antiquity; // in months
     int puntuation; // how can a guest be rated?
     List<Reservation*> reservations; 
