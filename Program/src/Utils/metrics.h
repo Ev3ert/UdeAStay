@@ -3,7 +3,6 @@
 
 #include "ConUtils.h"
 #include <cstddef>
-#include <iostream>
 
 namespace Metrics
 {

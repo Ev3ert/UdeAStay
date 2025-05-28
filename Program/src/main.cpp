@@ -8,6 +8,9 @@
 #include "Actors/guest.h"
 #include "Actors/host.h"
 #include "FileSystem/fileSystem.h"
+#include <fstream>
+#include <string>
+#include <iostream>
 
 Date askValidDate(); // TODO: Organize the funtions
 
@@ -724,8 +727,6 @@ int main()
     pause();
 
     cleanupMemory(accommodations, reservations, hosts, guests);
-
-
 
     return 0;
 }
