@@ -110,6 +110,8 @@ List<Accommodation*> Host::getAccommodations() const
     return accommodations;
 }
 
+
+
 // Setters
 
 void Host::setAccommodations(const List<Accommodation*>& accommodations)

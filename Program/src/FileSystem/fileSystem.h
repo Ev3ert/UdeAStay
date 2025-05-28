@@ -26,7 +26,7 @@ String getHostAccommodationIds(const Host& host);
 void loadAccomodations(List<Accommodation*>& allAccommodations);
 
 void loadReservations(List<Reservation*>& allReservations,
-     const List<Accommodation*>& allAccommodations);
+     const List<Accommodation*>& allAccommodations, int &accomMaxID, int &resMaxID);
 
 void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations);
 

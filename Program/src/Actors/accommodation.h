@@ -17,6 +17,7 @@ private:
     String name;
     const Host* host; 
     String department;
+    String municipality;
     String type; // hotel, apartment, etc
     String address;
     unsigned long pricePerNight;
@@ -27,7 +28,7 @@ public:
     /// * Constructors
 
     Accommodation(unsigned int id, const String& name, const Host* host, 
-                const String& department, const String& type, 
+                const String& department, const String municipality, const String& type, 
                 const String& address, unsigned long pricePerNight, 
                 List<String>& amenities);
     
@@ -48,6 +49,7 @@ public:
     const String& getName() const;
     const Host* getHost() const;
     const String& getDepartment() const;
+    const String& getMunicipality() const;
     const String& getType() const;
     const String& getAddress() const;
     const unsigned int getPricePerNight() const;

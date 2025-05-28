@@ -96,12 +96,12 @@ void loadAccomodations(List<Accommodation*>& allAccommodations)
         data = line.split('|');
         
 
-        if (!validateLineFields(data, 7, "Alojamientos")) {
+        if (!validateLineFields(data, 8, "Alojamientos")) {
             continue;
         }
 
 
-        List<String> amenities = data.get(6)->split(',');
+        List<String> amenities = data.get(7)->split(',');
 
 
         Accommodation* newAccommodation {nullptr};
@@ -113,9 +113,10 @@ void loadAccomodations(List<Accommodation*>& allAccommodations)
                 *data.get(1),                             // Name
                 nullptr,                                  // Host (will be set later)
                 *data.get(2),                            // Department
-                *data.get(3),                            // Type
-                *data.get(4),                            // Address
-                String::toInt(data.get(5)->getRawData()), // Price per night
+                *data.get(3),                             // Municipality
+                *data.get(4),                            // Type
+                *data.get(5),                            // Address
+                String::toInt(data.get(6)->getRawData()), // Price per night
                 amenities                                 // Amenities list
             );
 
@@ -136,7 +137,8 @@ void loadAccomodations(List<Accommodation*>& allAccommodations)
 }
 
 
-void loadReservations(List<Reservation*>& allReservations, const List<Accommodation*>& allAccommodations)
+void loadReservations(List<Reservation*>& allReservations,
+     const List<Accommodation*>& allAccommodations, int &accomMaxID, int &resMaxID)
 {
     std::ifstream resArc(archiveReservations);
 
@@ -211,6 +213,9 @@ void loadReservations(List<Reservation*>& allReservations, const List<Accommodat
             allReservations.insertEnd(newReservation);
 
             accommodation->setReservation(newReservation);
+
+            if(accommodation->getId() > accomMaxID) accomMaxID = accommodation->getId();
+            if(newReservation->getId() > resMaxID) resMaxID = newReservation->getId();
         }
         catch(...)
         {
@@ -374,10 +379,11 @@ void saveAccommodations(const List<Accommodation*>& allAccommodations) {
         Accommodation* accommodation = *allAccommodations.get(i);
         if (!accommodation) continue; // skip nullptr
         
-        // Format: ID|Name|Department|Type|Address|PricePerNight|Amenities
+        // Format: ID|Name|Department|Municipality|Type|Address|PricePerNight|Amenities
         accomFile << accommodation->getId() << "|"
                   << accommodation->getName().getRawData() << "|"
                   << accommodation->getDepartment().getRawData() << "|"
+                  << accommodation->getMunicipality().getRawData() << "|"
                   << accommodation->getType().getRawData() << "|"
                   << accommodation->getAddress().getRawData() << "|"
                   << accommodation->getPricePerNight() << "|"

@@ -1,3 +1,3 @@
-1|Hotel Paraíso|Antioquia|hotel|Cra 45 #13|120000|WiFi,Piscina,Desayuno
-2|Apartamento Playa|Magdalena|apartamento|Av 5 #12|95000|Cocina,TV,Cerca del mar
-3|Cabaña del Bosque|Cundinamarca|cabaña|Km 3 vía al bosque|80000|Chimenea,Balcón,Vista natural
+1|Hotel Paraíso|Antioquia|Caucasia|hotel|Cra 45 #13|120000|WiFi,Piscina,Desayuno
+2|Apartamento Playa|Magdalena|Santa Marta|apartamento|Av 5 #12|95000|Cocina,TV,Cerca del mar
+3|Cabaña del Bosque|Cundinamarca|Chipaque|cabaña|Km 3 vía al bosque|80000|Chimenea,Balcón,Vista natural

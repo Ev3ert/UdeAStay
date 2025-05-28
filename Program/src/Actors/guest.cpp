@@ -1,6 +1,7 @@
 #include "guest.h"
 #include "reservation.h"
 #include "accommodation.h"
+#include "accommodation.h"
 #include "../Utils/ConUtils.h"
 #include "../DataStructure/string.h"
 
@@ -24,7 +25,13 @@ void Guest::cancelReservation(unsigned int id)
         Reservation* reservation = *reservations.get(i);
         if (reservation->getId() == id)
         {
+            Accommodation* accom = reservation->getAccommodation();
+            accom->deleteReservation(reservation->getId());
+            
             reservations.deleteByPosition(i);
+            
+            delete reservation;
+            
             return;
         }
     }
@@ -62,8 +69,6 @@ void Guest::viewReservations() const
         printError("No hay reservas para mostrar.");
         return;
     }
-
-    printTitle((String("Reservas de ") + name).getRawData(), '-', 40);
     
     for (unsigned int i = 0; i < reservations.size(); i++)
     {
@@ -93,4 +98,9 @@ int Guest::getAntiquity() const
 int Guest::getPuntuation() const
 {
     return puntuation;
+}
+
+List<Reservation*> Guest::getReservations() const
+{
+    return reservations;
 }

@@ -7,10 +7,11 @@
 /// * Constructors
 
 Accommodation::Accommodation(unsigned int id, const String& name, const Host* host, 
-                               const String& department, const String& type, 
-                               const String& address, unsigned long pricePerNight, 
-                               List<String>& amenities)
-    : id(id), name(name), host(host), department(department), type(type), 
+                const String& department, const String municipality, const String& type, 
+                const String& address, unsigned long pricePerNight, 
+                List<String>& amenities)
+    : id(id), name(name), host(host), department(department), 
+        municipality(municipality), type(type), 
       address(address), pricePerNight(pricePerNight), amenities(amenities), 
       reservations() {}
 
@@ -51,7 +52,9 @@ void Accommodation::viewDetails() const
 
     printInfo("Anfitrion        : ", host->getName());
     printInfo("Departamento     : ", department);
+    printInfo("Municipio        : ", municipality);
     printInfo("Direccion        : ", address);
+    printInfo("Tipo             : ", type);
     printInfo("Precio por noche : ", pricePerNight);
     printInfo("Amenidades       : ", amenities);
 }
@@ -65,7 +68,6 @@ bool Accommodation::deleteReservation(unsigned int id)
         if (reservation->getId() == id)
         {
             reservations.deleteByPosition(i);
-            printSuccess("Reservación eliminada exitosamente\n");
             return true;
         }
     }
@@ -91,6 +93,10 @@ const Host* Accommodation::getHost() const
 const String& Accommodation::getDepartment() const
 {
     return department;
+}
+const String& Accommodation::getMunicipality() const
+{
+    return municipality;
 }
 const String& Accommodation::getType() const
 {

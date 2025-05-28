@@ -3,7 +3,7 @@
 #include "../Utils/ConUtils.h"
 
 
-Reservation::Reservation(unsigned int id, const Accommodation* accommodation, const String& guestName,
+Reservation::Reservation(unsigned int id, Accommodation* accommodation, const String& guestName,
                            const Date& startDate, int days, const String& paymentMethod,
                            const Date& paymentDate, unsigned long totalPrice, const String& anotations)
     : id(id), accommodation(accommodation), guestName(guestName), startDate(startDate),
@@ -63,7 +63,7 @@ unsigned int Reservation::getId() const
     return id;
 }
 
-const Accommodation* Reservation::getAccommodation() const
+Accommodation* Reservation::getAccommodation() const
 {
     return accommodation;
 }
@@ -106,7 +106,7 @@ const String& Reservation::getAnotations() const
 
 // setters
 
-void Reservation::setAccomodation(const Accommodation* newAccommodation) 
+void Reservation::setAccomodation(Accommodation* newAccommodation) 
 {
     accommodation = newAccommodation;
 }

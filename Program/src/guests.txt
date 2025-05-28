@@ -1,3 +1,4 @@
 Carlos Díaz|789456|18|5
 María Luna|321789|6|4
 Pedro Salazar|987654|30|2
+Evert|123|18|5

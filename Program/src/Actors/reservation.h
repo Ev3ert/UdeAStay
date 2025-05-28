@@ -13,7 +13,7 @@ private:
     /// * Properties
 
     unsigned int id;
-    const Accommodation* accommodation;
+    Accommodation* accommodation;
     String guestName;
     Date startDate;
     int days;
@@ -25,7 +25,7 @@ private:
 public:
     /// * Constructors
 
-    Reservation(unsigned int id, const Accommodation* accommodation, const String& guestName,
+    Reservation(unsigned int id, Accommodation* accommodation, const String& guestName,
                 const Date& startDate, int days, const String& paymentMethod,
                 const Date& paymentDate, unsigned long totalPrice, const String& anotations);
 
@@ -39,7 +39,7 @@ public:
 
     // Getters
     unsigned int getId() const;
-    const Accommodation* getAccommodation() const;
+    Accommodation* getAccommodation() const;
     const String& getGuestName() const;
     const Date& getStartDate() const;
     int getDays() const;
@@ -50,8 +50,7 @@ public:
 
 
     // setters
-    void setAccomodation(const Accommodation* newAccommodation);
-    
+    void setAccomodation(Accommodation* newAccommodation);
 
 };
 

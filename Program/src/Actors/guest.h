@@ -43,6 +43,7 @@ public:
     const String& getName() const;
     int getAntiquity() const;
     int getPuntuation() const;
+    List<Reservation*> getReservations() const;
 
 };
 
