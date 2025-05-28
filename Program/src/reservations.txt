@@ -1,5 +1,4 @@
-101|1|Carlos Díaz|12/6/2025|3|Tarjeta|10/6/2025|360000|Check-in tardío
 102|2|María Luna|25/6/2025|2|Efectivo|24/6/2025|190000|Solicitó cuna
 103|3|Pedro Salazar|1/7/2025|5|Transferencia|30/6/2025|400000|Llegada antes de las 12
+101|1|Carlos Díaz|12/6/2025|3|Tarjeta|10/6/2025|360000|Check-in tardío
 104|1|Evert|2/9/2025|3|efectivo|2/9/2025|360000|Sin anotaciones
-105|1|Evert|3/2/2025|3|efectivo|3/2/2025|360000|Sin anotaciones

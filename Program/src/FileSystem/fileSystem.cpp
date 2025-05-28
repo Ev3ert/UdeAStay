@@ -252,10 +252,17 @@ void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
 
         data = line.split('|');
 
-        if(!validateLineFields(data, 5, "Anfitriones"))
+        if(!validateLineFields(data, 6, "Anfitriones"))
         {
             continue;
         }
+
+        List<String> cutOffDateSplit = data.get(4)->split('/');
+        Date cutOffDate(
+            String::toInt(cutOffDateSplit.get(0)->getRawData()), // Day
+            String::toInt(cutOffDateSplit.get(1)->getRawData()), // Month
+            String::toInt(cutOffDateSplit.get(2)->getRawData())  // Year
+        );
 
         Host* newHost = nullptr;
         try
@@ -264,10 +271,11 @@ void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
                 *data.get(0),                             // Name
                 *data.get(1),                             // Document
                 String::toInt(data.get(2)->getRawData()), // Antiquity in months
-                String::toInt(data.get(3)->getRawData())  // Punctuation
+                String::toInt(data.get(3)->getRawData()),  // Punctuation
+                cutOffDate                                // cutOffDate
             );
 
-            List<String> accommodationIds = data.get(4)->split(',');
+            List<String> accommodationIds = data.get(5)->split(',');
 
             for (unsigned int i = 0; i < accommodationIds.size(); i++)
             {
@@ -398,7 +406,7 @@ void saveAccommodations(const List<Accommodation*>& allAccommodations) {
     accomFile.close();
     
     if (accomFile.good()) {
-        printSuccess("Alojamientos guardadas exitosamente.\n");
+        //printSuccess("Alojamientos guardadas exitosamente.\n");
     } else {
         printError("Error al guardar alojamientos.\n");
     }
@@ -437,7 +445,7 @@ void saveReservations(const List<Reservation*>& allReservations) {
     resFile.close();
     
     if (resFile.good()) {
-        printSuccess("Reservaciones guardadas exitosamente.\n");
+        //printSuccess("Reservaciones guardadas exitosamente.\n");
     } else {
         printError("Error al guardar reservaciones.\n");
     }
@@ -456,11 +464,12 @@ void saveHosts(const List<Host*>& allHosts) {
         Host* host = *allHosts.get(i);
         if (!host) continue;
         
-        // Format: Name|Document|Antiquity|Punctuation|AccommodationIDs
+        // Format: Name|Document|Antiquity|Punctuation|cutOffDate|AccommodationIDs
         hostFile << host->getName().getRawData() << "|"
                  << host->getDocument().getRawData() << "|"
                  << host->getAntiquity() << "|"
                  << host->getPuntuation() << "|"
+                 << dateToString(host->getCutOffDate()).getRawData() << "|"
                  << getHostAccommodationIds(*host).getRawData();
         
         // only add a line if not is the last element
@@ -472,7 +481,7 @@ void saveHosts(const List<Host*>& allHosts) {
     hostFile.close();
     
     if (hostFile.good()) {
-        printSuccess("Hosts guardados exitosamente.\n");
+        //printSuccess("Hosts guardados exitosamente.\n");
     } else {
         printError("Error al guardar hosts.\n");
     }
@@ -506,7 +515,7 @@ void saveGuests(const List<Guest*>& allGuests) {
     guestFile.close();
     
     if (guestFile.good()) {
-        printSuccess("Huéspedes guardados exitosamente.\n");
+        //printSuccess("Huéspedes guardados exitosamente.\n");
     } else {
         printError("Error al guardar huéspedes.\n");
     }
@@ -518,14 +527,46 @@ void saveAllData(const List<Accommodation*>& accommodations,
                  const List<Host*>& hosts,
                  const List<Guest*>& guests) {
     
-    print("Guardando datos...\n");
+    //print("Guardando datos...\n");
     
     saveAccommodations(accommodations);
     saveHosts(hosts);           
     saveReservations(reservations);  
     saveGuests(guests);         
     
-    printSuccess("Todos los datos han sido guardados exitosamente.\n");
+    //printSuccess("Todos los datos han sido guardados exitosamente.\n");
+}
+
+void saveHistoricReservations(const List<Reservation*>& historicReservations) {
+    std::ofstream histFile(archiveHistoricRev, std::ios::app); // append mode(how: i dont know)
+
+    if (!histFile.is_open()) {
+        printError("No se pudo abrir el archivo histórico para escritura.\n");
+        return;
+    }
+
+    for (unsigned int i = 0; i < historicReservations.size(); i++) {
+        Reservation* reservation = *historicReservations.get(i);
+        if (!reservation || !reservation->getAccommodation()) continue;
+
+        histFile << reservation->getId() << "|"
+                 << reservation->getAccommodation()->getId() << "|"
+                 << reservation->getGuestName().getRawData() << "|"
+                 << dateToString(reservation->getStartDate()).getRawData() << "|"
+                 << reservation->getDays() << "|"
+                 << reservation->getPaymentMethod().getRawData() << "|"
+                 << dateToString(reservation->getPaymentDate()).getRawData() << "|"
+                 << reservation->getTotalPrice() << "|"
+                 << reservation->getAnotations().getRawData() << "\n";
+    }
+
+    histFile.close();
+
+    if (histFile.good()) {
+        //printSuccess("Reservaciones históricas guardadas exitosamente.\n");
+    } else {
+        printError("Error al guardar reservaciones históricas.\n");
+    }
 }
 
 

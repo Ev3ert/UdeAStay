@@ -13,6 +13,7 @@ const String archiveAccomodations = "/home/evert/Documents/Academico/Informatica
 const String archiveReservations = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/reservations.txt";
 const String archiveHost = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/hosts.txt";
 const String archiveGuest = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/guests.txt";
+const String archiveHistoricRev = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/historic.txt";
 
 
 bool validateLineFields(const List<String>& data, unsigned int index, const String& fieldName);
@@ -40,6 +41,7 @@ void saveAllData(const List<Accommodation*>& accommodations,
                  const List<Reservation*>& reservations,
                  const List<Host*>& hosts,
                  const List<Guest*>& guests);
+void saveHistoricReservations(const List<Reservation*>& historicReservations);
 
 void cleanupMemory(List<Accommodation*>& accommodations, 
                   List<Reservation*>& reservations,

@@ -9,6 +9,9 @@
 #include "FileSystem/fileSystem.h"
 
 
+Date askValidDate(); // TODO: Organize the funtions
+
+
 List<Accommodation*> accommodations;
 List<Reservation*> reservations;
 List<Host*> hosts;
@@ -55,6 +58,117 @@ Guest *searchGuestByName(String name)
 
 /// * ================ HOST ================
 
+void viewReservationHostInterface()
+{
+    clearConsole();
+    printTitle(" CONSULTA DE RESERVACIONES ", '=');
+    printDivider();
+    space();
+
+    print("¿Desea filtrar por rango de fechas? (s/n): ");
+    char response[2];
+    readLine(response, 2);
+
+    if(response[0] == 's' || response[0] == 'S')
+    {
+        printTitle("INGRESE RANGO DE FECHAS", '-');
+        print("Fecha inicial:\n");
+        Date startRange = askValidDate();
+        
+        print("\nFecha final:\n");
+        Date endRange = askValidDate();
+
+        if(endRange < startRange)
+        {
+            printError("ERROR: La fecha final debe ser posterior a la inicial\n");
+            pause();
+            return;
+        }
+
+        userHost->consultReservations(startRange, endRange, true);
+    }
+    else
+    {
+        userHost->consultReservations();
+    }
+
+    print("\nIngrese el ID de la reservacion que desea cancelar (0 para volver): ");
+    unsigned int resId = readInt();
+
+    if(resId != 0)
+    {
+        print("\n¿Esta seguro que desea cancelar esta reservacion? (s/n): ");
+        char confirm[2];
+        readLine(confirm, 2);
+
+        if(confirm[0] == 's' || confirm[0] == 'S')
+        {
+            for(unsigned int i = 0; i < reservations.size(); i++)
+            {
+                if((*reservations.get(i))->getId() == resId)
+                {
+                    reservations.deleteByPosition(i);
+                    break;
+                }
+            }
+
+            userHost->cancelReservation(resId);
+            printSuccess("\nReservacion cancelada exitosamente!\n");
+        }
+    }
+    
+    pause();
+}
+
+/// ----- user details -----
+
+void viewHostUserDetails()
+{
+    clearConsole();
+    printTitle(" DATOS DEL USUARIO ", '=');
+    printDivider();
+    space();
+
+    printInfo("Nombre           : ", userHost->getName());
+    printInfo("Documento        : ", userHost->getDocument());
+    printInfo("Antiguedad       : ", userHost->getAntiquity());
+    printInfo("Puntuación       : ", userHost->getPuntuation());
+
+    space();
+    pause();
+}
+
+/// ----- UpdateHistoric -----
+void updateHistoricInterface()
+{
+    clearConsole();
+    printTitle(" ACTUALIZAR HISTÓRICO ", '=');
+    printDivider();
+    space();
+
+    printInfo("Fecha de corte actual: ", userHost->getCutOffDate().getFormatDate());
+
+    Date newCutOffDate (1,1,2024);
+    bool valid = false;
+    do {
+        print("Ingrese la nueva fecha de corte:\n");
+        newCutOffDate = askValidDate();
+
+        if (newCutOffDate <= userHost->getCutOffDate()) {
+            printError("ERROR: La nueva fecha de corte debe ser posterior a la actual.\n");
+        } else {
+            valid = true;
+        }
+    } while (!valid);
+
+    userHost->updateHistoric(newCutOffDate, reservations);
+
+    saveAllData(accommodations, reservations, hosts, guests);
+
+    printSuccess("Histórico actualizado correctamente.\n");
+    pause();
+}
+
 void hostProfile()
 {
     int option {0};
@@ -75,15 +189,18 @@ void hostProfile()
 
         space();
 
-        int option {readInt()};
+        option = readInt();
 
         switch (option)
         {
             case 1:
+                viewReservationHostInterface();
                 break;
             case 2:
+                updateHistoricInterface();
                 break;
             case 3:
+                viewHostUserDetails();
                 break;
             case 4:
                 return;
@@ -305,6 +422,19 @@ void accommodationsInterface() {
     if (selection == 0) return;
 
     Accommodation* chosen = *filteredList.get(selection - 1);
+
+    const Host* host = chosen->getHost();
+    Date cutOff = host->getCutOffDate();
+    Date maxDate = cutOff.addDays(365);
+
+    if (checkInDate < cutOff || checkInDate > maxDate) {
+        printError(String("ERROR: Solo puede reservar entre ") 
+            + cutOff.getFormatDate() + " y " + maxDate.getFormatDate() + ".\n");
+        space();
+        pause();
+        return;
+    }
+
     String paymentMethod = askValidPaymentMethod();
     String notes = askNotes();
 
@@ -417,11 +547,11 @@ void guestProfile()
         print("1. Buscar alojamientos. \n");
         print("2. Ver reservaciones. \n");
         print("3. Ver datos de ususario. \n");
-        print("4. Salir y Guardar.\n");
+        print("4. Salir.\n");
 
         space();
 
-        int option {readInt()};
+        option = readInt();
 
         switch (option)
         {

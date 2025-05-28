@@ -3,8 +3,9 @@
 
 #include "../DataStructure/string.h"
 #include "../DataStructure/list.h"
+#include "../Utils/date.h"
 
-class Date;
+class Reservation;
 class Accommodation;
 
 class Host
@@ -16,13 +17,14 @@ private:
     String document;
     int antiquity; // in months
     int puntuation; 
+    Date cutOffDate;
 
     List<Accommodation*> accommodations;
 
 public:
     /// * Constructor
 
-    Host(const String& name, const String& document, int antiquity, int puntuation);
+    Host(const String& name, const String& document, int antiquity, int puntuation, const Date& cutOffDate);
 
     /// * Methods
 
@@ -36,15 +38,18 @@ public:
     void cancelReservation(unsigned int id);
 
     // Prints all reservation from all accommodations
-    void consultReservations();
+    void consultReservations(const Date& startRange = Date(1,1,2024), 
+                             const Date& endRange = Date(31,12,10000), 
+                             bool useDateFilter = false);
 
     // Update de historic archive
-    /// void updateHistoric(Date cutOffDate);
+    void updateHistoric(Date cutOffDate, List<Reservation*>& globalReservations);
 
     const String& getDocument() const;
     const String& getName() const;
     int getAntiquity() const;
     int getPuntuation() const;
+    const Date& getCutOffDate() const;
     List<Accommodation*> getAccommodations() const;
 
     // Setters
