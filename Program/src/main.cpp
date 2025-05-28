@@ -2,38 +2,38 @@
 #include "DataStructure/string.h"
 #include "Utils/ConUtils.h"
 #include "Utils/date.h"
+#include "Utils/metrics.h"
 #include "Actors/accommodation.h"
 #include "Actors/reservation.h"
 #include "Actors/guest.h"
 #include "Actors/host.h"
 #include "FileSystem/fileSystem.h"
 
-
 Date askValidDate(); // TODO: Organize the funtions
 
+List<Accommodation *> accommodations;
+List<Reservation *> reservations;
+List<Host *> hosts;
+List<Guest *> guests;
 
-List<Accommodation*> accommodations;
-List<Reservation*> reservations;
-List<Host*> hosts;
-List<Guest*> guests;
+Host *userHost{nullptr};
+Guest *userGuest{nullptr};
 
-Host* userHost {nullptr};
-Guest* userGuest {nullptr};
-
-bool userIsHost {false};
-
+bool userIsHost{false};
 
 /// ID
 
-int accommodationMaxID {};
-int reservationMaxID {};
+int accommodationMaxID{};
+int reservationMaxID{};
 
 Host *searchHostByName(String name)
 {
-    for(int i = 0; i < hosts.size(); i++)
+    for (int i = 0; i < hosts.size(); i++)
     {
-        Host* host = *hosts.get(i);
-        if(name == host->getName())
+        Metrics::addIteration();
+
+        Host *host = *hosts.get(i);
+        if (name == host->getName())
         {
             return host;
         }
@@ -44,10 +44,12 @@ Host *searchHostByName(String name)
 
 Guest *searchGuestByName(String name)
 {
-    for(int i = 0; i < guests.size(); i++)
+    for (int i = 0; i < guests.size(); i++)
     {
-        Guest* guest = *guests.get(i);
-        if(name == guest->getName())
+        Metrics::addIteration();
+
+        Guest *guest = *guests.get(i);
+        if (name == guest->getName())
         {
             return guest;
         }
@@ -69,16 +71,16 @@ void viewReservationHostInterface()
     char response[2];
     readLine(response, 2);
 
-    if(response[0] == 's' || response[0] == 'S')
+    if (response[0] == 's' || response[0] == 'S')
     {
         printTitle("INGRESE RANGO DE FECHAS", '-');
         print("Fecha inicial:\n");
         Date startRange = askValidDate();
-        
+
         print("\nFecha final:\n");
         Date endRange = askValidDate();
 
-        if(endRange < startRange)
+        if (endRange < startRange)
         {
             printError("ERROR: La fecha final debe ser posterior a la inicial\n");
             pause();
@@ -95,17 +97,19 @@ void viewReservationHostInterface()
     print("\nIngrese el ID de la reservacion que desea cancelar (0 para volver): ");
     unsigned int resId = readInt();
 
-    if(resId != 0)
+    if (resId != 0)
     {
         print("\n¿Esta seguro que desea cancelar esta reservacion? (s/n): ");
         char confirm[2];
         readLine(confirm, 2);
 
-        if(confirm[0] == 's' || confirm[0] == 'S')
+        if (confirm[0] == 's' || confirm[0] == 'S')
         {
-            for(unsigned int i = 0; i < reservations.size(); i++)
+            for (unsigned int i = 0; i < reservations.size(); i++)
             {
-                if((*reservations.get(i))->getId() == resId)
+                Metrics::addIteration();
+
+                if ((*reservations.get(i))->getId() == resId)
                 {
                     reservations.deleteByPosition(i);
                     break;
@@ -116,7 +120,7 @@ void viewReservationHostInterface()
             printSuccess("\nReservacion cancelada exitosamente!\n");
         }
     }
-    
+
     pause();
 }
 
@@ -148,15 +152,20 @@ void updateHistoricInterface()
 
     printInfo("Fecha de corte actual: ", userHost->getCutOffDate().getFormatDate());
 
-    Date newCutOffDate (1,1,2024);
+    Date newCutOffDate(1, 1, 2024);
     bool valid = false;
-    do {
+    do
+    {
+
         print("Ingrese la nueva fecha de corte:\n");
         newCutOffDate = askValidDate();
 
-        if (newCutOffDate <= userHost->getCutOffDate()) {
+        if (newCutOffDate <= userHost->getCutOffDate())
+        {
             printError("ERROR: La nueva fecha de corte debe ser posterior a la actual.\n");
-        } else {
+        }
+        else
+        {
             valid = true;
         }
     } while (!valid);
@@ -171,7 +180,7 @@ void updateHistoricInterface()
 
 void hostProfile()
 {
-    int option {0};
+    int option{0};
 
     while (option != 4)
     {
@@ -193,35 +202,34 @@ void hostProfile()
 
         switch (option)
         {
-            case 1:
-                viewReservationHostInterface();
-                break;
-            case 2:
-                updateHistoricInterface();
-                break;
-            case 3:
-                viewHostUserDetails();
-                break;
-            case 4:
-                return;
-            default:
-                printError("ERROR: Opcion invalida");
-                break;
+        case 1:
+            viewReservationHostInterface();
+            break;
+        case 2:
+            updateHistoricInterface();
+            break;
+        case 3:
+            viewHostUserDetails();
+            break;
+        case 4:
+            return;
+        default:
+            printError("ERROR: Opcion invalida");
+            break;
         }
     }
-
 }
-    
 
 /// * ================ GUEST ================
 
 /// ----- Search accommodations ------
 
-Date askValidDate() 
+Date askValidDate()
 {
-    Date date = Date(1,1,2024);
+    Date date = Date(1, 1, 2024);
     bool valid = false;
-    do {
+    do
+    {
         print("Ingrese la fecha (DD MM YYYY):\n");
 
         print("Dia: ");
@@ -234,9 +242,12 @@ Date askValidDate()
         int year = readInt();
 
         date = Date(day, month, year);
-        if (!date.isValid()) {
+        if (!date.isValid())
+        {
             printError("ERROR: fecha invalida.\n");
-        } else {
+        }
+        else
+        {
             valid = true;
         }
     } while (!valid);
@@ -244,13 +255,15 @@ Date askValidDate()
     return date;
 }
 
-int askValidNights() 
+int askValidNights()
 {
     int nights = 0;
-    do {
+    do
+    {
         print("Ingrese el numero de noches: ");
         nights = readInt();
-        if (nights <= 0) {
+        if (nights <= 0)
+        {
             printError("ERROR: Numero de noches invalido.\n");
         }
     } while (nights <= 0);
@@ -258,15 +271,16 @@ int askValidNights()
     return nights;
 }
 
-
-String askMunicipality() 
+String askMunicipality()
 {
 
-    char* municipality = new char[32];
+    char *municipality = new char[32];
 
-    while (true) {
+    while (true)
+    {
         print("Ingrese el municipio: ");
-        if (readLine(municipality, 32)) {
+        if (readLine(municipality, 32))
+        {
             String dept(municipality);
             delete[] municipality;
             return dept;
@@ -275,7 +289,8 @@ String askMunicipality()
     }
 }
 
-int askFilterOption() {
+int askFilterOption()
+{
 
     print("\nDesea aplicar filtros adicionales?\n");
     print("1. Costo maximo por noche\n");
@@ -284,21 +299,26 @@ int askFilterOption() {
     print("4. Ningun filtro\n");
 
     int option;
-    do {
+    do
+    {
         option = readInt();
-        if (option < 1 || option > 4) {
+        if (option < 1 || option > 4)
+        {
             printError("ERROR: Invalid option.\n");
         }
     } while (option < 1 || option > 4);
     return option;
 }
 
-unsigned long askMaxPrice() {
+unsigned long askMaxPrice()
+{
     unsigned long price;
-    do {
+    do
+    {
         print("Ingrese el precio maximo por noche: ");
         price = readInt();
-        if (price <= 0) {
+        if (price <= 0)
+        {
             printError("ERROR: El precio debe ser mayor que 0.\n");
         }
     } while (price <= 0);
@@ -306,12 +326,15 @@ unsigned long askMaxPrice() {
     return price;
 }
 
-int askMinRating() {
+int askMinRating()
+{
     int rating;
-    do {
+    do
+    {
         print("Ingrese la puntuacion minima del anfitrion (1-5): ");
         rating = readInt();
-        if (rating < 1 || rating > 5) {
+        if (rating < 1 || rating > 5)
+        {
             printError("ERROR: La puntuacion debe estar en el rango de 1 a 5.\n");
         }
     } while (rating < 1 || rating > 5);
@@ -319,19 +342,23 @@ int askMinRating() {
     return rating;
 }
 
-
-String askValidPaymentMethod() {
-    char* input = new char[32];
+String askValidPaymentMethod()
+{
+    char *input = new char[32];
     String method;
     bool valid = false;
-    do {
+    do
+    {
         print("Metodo de pago (efectivo/tarjeta): ");
         readLine(input, 32);
         method = String(input);
 
-        if (method == String("efectivo") || method == String("tarjeta")) {
+        if (method == String("efectivo") || method == String("tarjeta"))
+        {
             valid = true;
-        } else {
+        }
+        else
+        {
             printError("ERROR: Solo se permite 'efectivo' o 'tarjeta'.\n");
         }
     } while (!valid);
@@ -340,13 +367,15 @@ String askValidPaymentMethod() {
     return method;
 }
 
-String askNotes() {
-    char* notes = new char[1000];
+String askNotes()
+{
+    char *notes = new char[1000];
 
     print("Notas adicionales (Enter para omitir): ");
     readLine(notes, 1000);
 
-    if(notes[0] == '\0') {
+    if (notes[0] == '\0')
+    {
         delete[] notes;
         return String("Sin anotaciones");
     }
@@ -356,8 +385,8 @@ String askNotes() {
     return result;
 }
 
-
-void accommodationsInterface() {
+void accommodationsInterface()
+{
     clearConsole();
     printTitle(" BUSQUEDA DE ALOJAMIENTOS ", '=');
     printDivider();
@@ -366,7 +395,8 @@ void accommodationsInterface() {
     Date checkInDate = askValidDate();
     int nights = askValidNights();
 
-    if(!userGuest->checkAvailability(checkInDate, nights)) {
+    if (!userGuest->checkAvailability(checkInDate, nights))
+    {
         printError("ERROR: Ya tienes una reservación en esas fechas\n");
         space();
         pause();
@@ -385,19 +415,24 @@ void accommodationsInterface() {
     if (filterOption == 2 || filterOption == 3)
         minRating = askMinRating();
 
-    List<Accommodation*> filteredList;
-    for (int i = 0; i < accommodations.size(); ++i) {
-        Accommodation* acc = *accommodations.get(i);
+    List<Accommodation *> filteredList;
+    for (int i = 0; i < accommodations.size(); ++i)
+    {
+        Metrics::addIteration();
+
+        Accommodation *acc = *accommodations.get(i);
 
         if (acc->getMunicipality() == municipality &&
             acc->isAvailable(checkInDate, nights) &&
             acc->getPricePerNight() <= maxPrice &&
-            acc->getHost()->getPuntuation() >= minRating) {
+            acc->getHost()->getPuntuation() >= minRating)
+        {
             filteredList.insertEnd(acc);
         }
     }
 
-    if (filteredList.size() == 0) {
+    if (filteredList.size() == 0)
+    {
         printError("No se encontraron alojamientos con los criterios especificados\n");
         space();
         pause();
@@ -405,31 +440,37 @@ void accommodationsInterface() {
     }
 
     printTitle(" ALOJAMIENTOS DISPONIBLES ", '-');
-    for (int i = 0; i < filteredList.size(); ++i) {
-        print("\n["); print(String::toString(i + 1)); print("] ");
+    for (int i = 0; i < filteredList.size(); ++i)
+    {
+        print("\n[");
+        print(String::toString(i + 1));
+        print("] ");
         (*filteredList.get(i))->viewDetails();
     }
 
     print("\nSelecciones un alojamiento para reservar(0 para cancelar): ");
     int selection;
-    do {
+    do
+    {
         selection = readInt();
-        if (selection < 0 || selection > filteredList.size()) {
+        if (selection < 0 || selection > filteredList.size())
+        {
             printError("ERROR: Seleccion invalida.\n");
         }
     } while (selection < 0 || selection > filteredList.size());
 
-    if (selection == 0) return;
+    if (selection == 0)
+        return;
 
-    Accommodation* chosen = *filteredList.get(selection - 1);
+    Accommodation *chosen = *filteredList.get(selection - 1);
 
-    const Host* host = chosen->getHost();
+    const Host *host = chosen->getHost();
     Date cutOff = host->getCutOffDate();
     Date maxDate = cutOff.addDays(365);
 
-    if (checkInDate < cutOff || checkInDate > maxDate) {
-        printError(String("ERROR: Solo puede reservar entre ") 
-            + cutOff.getFormatDate() + " y " + maxDate.getFormatDate() + ".\n");
+    if (checkInDate < cutOff || checkInDate > maxDate)
+    {
+        printError(String("ERROR: Solo puede reservar entre ") + cutOff.getFormatDate() + " y " + maxDate.getFormatDate() + ".\n");
         space();
         pause();
         return;
@@ -441,10 +482,9 @@ void accommodationsInterface() {
     unsigned int resId = reservationMaxID + 1;
     unsigned long totalCost = chosen->getPricePerNight() * nights;
 
-    Reservation* newRes = new Reservation(
+    Reservation *newRes = new Reservation(
         resId, chosen, userGuest->getName(), checkInDate,
-        nights, paymentMethod, checkInDate, totalCost, notes
-    );
+        nights, paymentMethod, checkInDate, totalCost, notes);
 
     chosen->setReservation(newRes);
     reservations.insertEnd(newRes);
@@ -470,47 +510,55 @@ void guestReservationsInterface()
 
     space();
 
-    if(userGuest->getReservations().isEmpty()) {
+    if (userGuest->getReservations().isEmpty())
+    {
         pause();
         return;
     }
 
     print("\nSeleccione su ID de reservacion si desea anularla (0 para cancelar): ");
     int selection;
-    do {
+    do
+    {
         selection = readInt();
-        if(selection < 0 || selection > userGuest->getReservations().size()) {
+        if (selection < 0 || selection > userGuest->getReservations().size())
+        {
             printError("ERROR: ID de reservacion invalido.\n");
         }
-    } while(selection < 0 || selection > userGuest->getReservations().size());
+    } while (selection < 0 || selection > userGuest->getReservations().size());
 
-    if(selection == 0) {
+    if (selection == 0)
+    {
         return;
     }
 
-    Reservation* res = *userGuest->getReservations().get(selection - 1);
+    Reservation *res = *userGuest->getReservations().get(selection - 1);
 
     print("\n¿Esta seguro que desea anular esta reservacion? (s/n): ");
-    char* confirm = new char[2];
+    char *confirm = new char[2];
     readLine(confirm, 2);
 
-    if(confirm[0] == 's' || confirm[0] == 'S') {
-        for(unsigned int i = 0; i < reservations.size(); i++) {
-            if((*reservations.get(i))->getId() == res->getId()) {
+    if (confirm[0] == 's' || confirm[0] == 'S')
+    {
+        for (unsigned int i = 0; i < reservations.size(); i++)
+        {
+            Metrics::addIteration();
+
+            if ((*reservations.get(i))->getId() == res->getId())
+            {
                 reservations.deleteByPosition(i);
                 break;
             }
         }
 
         userGuest->cancelReservation(res->getId());
-        
+
         printSuccess("\nReservacion cancelada exitosamente!\n");
     }
 
     delete[] confirm;
     space();
     pause();
-   
 }
 
 void viewGuestUserDetails()
@@ -529,11 +577,10 @@ void viewGuestUserDetails()
     pause();
 }
 
-
 void guestProfile()
 {
 
-    int option {0};
+    int option{0};
 
     while (option != 4)
     {
@@ -555,23 +602,22 @@ void guestProfile()
 
         switch (option)
         {
-            case 1:
-                accommodationsInterface();
-                break;
-            case 2:
-                guestReservationsInterface();
-                break;
-            case 3:
-                viewGuestUserDetails();
-                break;
-            case 4:
-                return;
-            default:
-                printError("ERROR: Opcion invalida");
-                break;
+        case 1:
+            accommodationsInterface();
+            break;
+        case 2:
+            guestReservationsInterface();
+            break;
+        case 3:
+            viewGuestUserDetails();
+            break;
+        case 4:
+            return;
+        default:
+            printError("ERROR: Opcion invalida");
+            break;
         }
     }
-
 }
 
 /// * ================ LOGIN ================
@@ -581,8 +627,8 @@ void login()
     printTitle(" UDEASTAY ", '=');
     printDivider('=');
 
-    char* userName = new char[16];
-    bool userFound {false};
+    char *userName = new char[16];
+    bool userFound{false};
 
     do
     {
@@ -590,7 +636,7 @@ void login()
 
         print("Ingrese su nombre de usario: ");
 
-        if(!readLine(userName, 16))
+        if (!readLine(userName, 16))
         {
             printError("ERROR: El nombre de usuario excede el límite de caracteres\n");
             continue;
@@ -599,12 +645,12 @@ void login()
         userHost = searchHostByName(userName);
         userGuest = searchGuestByName(userName);
 
-        if(userHost)
+        if (userHost)
         {
             userIsHost = true;
             userFound = true;
         }
-        else if(userGuest)
+        else if (userGuest)
         {
             userFound = true;
         }
@@ -613,24 +659,22 @@ void login()
             printError("ERROR: Usuario no encontrado\n");
         }
 
-    }
-    while(!userFound);
+    } while (!userFound);
 
-
-    bool isPassword {false};
-    char* userDoc = new char[10];
+    bool isPassword{false};
+    char *userDoc = new char[10];
 
     do
     {
         print("Ingrese su documento: ");
 
-        if(!readLine(userDoc, 10))
+        if (!readLine(userDoc, 10))
         {
             printError("ERROR: La informacion ingresada excede el límite de caracteres(10)\n");
             continue;
         }
 
-        if(userIsHost)
+        if (userIsHost)
         {
             isPassword = (userHost->getDocument() == String(userDoc));
         }
@@ -639,23 +683,19 @@ void login()
             isPassword = (userGuest->getDocument() == String(userDoc));
         }
 
-        if(!isPassword)
+        if (!isPassword)
         {
             printError("ERROR: Credencial incorrecta.\n");
         }
-        
 
-
-    }
-    while(!isPassword);
-
+    } while (!isPassword);
 
     delete[] userDoc;
     delete[] userName;
 
     clearConsole();
 
-    if(userIsHost)
+    if (userIsHost)
     {
         hostProfile();
     }
@@ -665,26 +705,27 @@ void login()
     }
 }
 
-
-
 int main()
 {
 
     loadAccomodations(accommodations);
     loadReservations(reservations, accommodations, accommodationMaxID, reservationMaxID);
     loadHost(hosts, accommodations);
-    loadGuest(guests, reservations);  
-    
+    loadGuest(guests, reservations);
 
     login();
 
-
     saveAllData(accommodations, reservations, hosts, guests);
 
+    clearConsole();
+
+    Metrics::report();
+
+    pause();
 
     cleanupMemory(accommodations, reservations, hosts, guests);
 
 
-    return 0;
 
+    return 0;
 }

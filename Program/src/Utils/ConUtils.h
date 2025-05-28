@@ -3,18 +3,17 @@
 
 #include <iostream>
 
-
 /// * ------ Print format functions ------
 
 // Funtion to print normal text
 void print(const char *text);
 
 // Funtion to print text with a value
-template<typename T>// The template function must be defined in the header file
+template <typename T> // The template function must be defined in the header file
 void printInfo(const char *text, const T &value)
 {
     std::cout << "\033[1;1m" << text << "\033[0m" << value << '\n';
-}                        
+}
 
 // Function to print a title with a fill character
 void printTitle(const char *title, char fill = '-', unsigned int width = 50);
@@ -25,7 +24,7 @@ void printDivider(char fill = '-', unsigned int width = 50);
 // Funtion to print a text centered in the console
 void printCentered(const char *text, unsigned int width = 50);
 
-// Function for printing green success text 
+// Function for printing green success text
 void printSuccess(const char *text);
 
 // Function for printing red error text
@@ -36,7 +35,7 @@ void space();
 
 /// * ------ reading functions ------
 
-// Funtion to read a line from the console whit spaces 
+// Funtion to read a line from the console whit spaces
 bool readLine(char *buffer, unsigned int size);
 
 // Function to read an integer from the console and handle errors
@@ -57,6 +56,5 @@ void clearFail();
 
 // funtion to clear the input buffer
 void flushInput();
-
 
 #endif // CONUTILS_H

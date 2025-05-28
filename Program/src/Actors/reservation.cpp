@@ -1,15 +1,22 @@
 #include "reservation.h"
 #include "accommodation.h"
 #include "../Utils/ConUtils.h"
+#include "../Utils/metrics.h"
 
-
-Reservation::Reservation(unsigned int id, Accommodation* accommodation, const String& guestName,
-                           const Date& startDate, int days, const String& paymentMethod,
-                           const Date& paymentDate, unsigned long totalPrice, const String& anotations)
+Reservation::Reservation(unsigned int id, Accommodation *accommodation, const String &guestName,
+                         const Date &startDate, int days, const String &paymentMethod,
+                         const Date &paymentDate, unsigned long totalPrice, const String &anotations)
     : id(id), accommodation(accommodation), guestName(guestName), startDate(startDate),
       days(days), paymentMethod(paymentMethod), paymentDate(paymentDate),
-      totalPrice(totalPrice), anotations(anotations) {}
+      totalPrice(totalPrice), anotations(anotations)
+{
+    Metrics::addMemory(sizeof(Reservation));
+}
 
+Reservation::~Reservation()
+{
+    Metrics::removeMemory(sizeof(Reservation));
+}
 
 /// * Methods
 
@@ -36,7 +43,8 @@ void Reservation::generateVoucher() const
     printInfo("Precio total     : $", String::toString(totalPrice));
     space();
 
-    if (anotations.getRawData()[0] != '\0') {
+    if (anotations.getRawData()[0] != '\0')
+    {
         printTitle("ANOTACIONES", '-', 60);
         printInfo("", anotations);
         space();
@@ -55,7 +63,6 @@ void Reservation::viewInfo() const
     space();
 }
 
-
 // Getters
 
 unsigned int Reservation::getId() const
@@ -63,17 +70,17 @@ unsigned int Reservation::getId() const
     return id;
 }
 
-Accommodation* Reservation::getAccommodation() const
+Accommodation *Reservation::getAccommodation() const
 {
     return accommodation;
 }
 
-const String& Reservation::getGuestName() const
+const String &Reservation::getGuestName() const
 {
     return guestName;
 }
 
-const Date& Reservation::getStartDate() const
+const Date &Reservation::getStartDate() const
 {
     return startDate;
 }
@@ -83,12 +90,12 @@ int Reservation::getDays() const
     return days;
 }
 
-const String& Reservation::getPaymentMethod() const
+const String &Reservation::getPaymentMethod() const
 {
     return paymentMethod;
 }
 
-const Date& Reservation::getPaymentDate() const
+const Date &Reservation::getPaymentDate() const
 {
     return paymentDate;
 }
@@ -98,20 +105,14 @@ unsigned long Reservation::getTotalPrice() const
     return totalPrice;
 }
 
-const String& Reservation::getAnotations() const
+const String &Reservation::getAnotations() const
 {
     return anotations;
 }
 
-
 // setters
 
-void Reservation::setAccomodation(Accommodation* newAccommodation) 
+void Reservation::setAccomodation(Accommodation *newAccommodation)
 {
     accommodation = newAccommodation;
 }
-
-
-
-
-

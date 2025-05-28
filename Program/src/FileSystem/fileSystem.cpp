@@ -10,27 +10,26 @@
 #include <iostream>
 #include <fstream>
 
-
-bool validateLineFields(const List<String>& data, unsigned int index, const String& fieldName)
+bool validateLineFields(const List<String> &data, unsigned int index, const String &fieldName)
 {
-    if(data.size() != index)
+    if (data.size() != index)
     {
-        printError(String("Lista incompleta en") + fieldName + ". Esperados "
-             + String::toString(index) + ", encontrados: " 
-             + String::toString(data.size()) + "\n");
-        
+        printError(String("Lista incompleta en") + fieldName + ". Esperados " + String::toString(index) + ", encontrados: " + String::toString(data.size()) + "\n");
+
         return false;
     }
     return true;
 }
 
-
-Accommodation* findAccommodationById(const List<Accommodation*>& accommodations, int id) {
-    for (unsigned int i = 0; i < accommodations.size(); i++) 
+Accommodation *findAccommodationById(const List<Accommodation *> &accommodations, int id)
+{
+    for (unsigned int i = 0; i < accommodations.size(); i++)
     {
-        Accommodation* accommodation = *accommodations.get(i);
+        Metrics::addIteration();
 
-        if (accommodation && accommodation->getId() == id) 
+        Accommodation *accommodation = *accommodations.get(i);
+
+        if (accommodation && accommodation->getId() == id)
         {
             return accommodation;
         }
@@ -38,38 +37,39 @@ Accommodation* findAccommodationById(const List<Accommodation*>& accommodations,
     return nullptr;
 }
 
-
-String amenitiesListToString(const List<String>& amenities)
+String amenitiesListToString(const List<String> &amenities)
 {
     String result = "";
-    for(unsigned int i = 0; i < amenities.size(); i++)
+    for (unsigned int i = 0; i < amenities.size(); i++)
     {
-        if(i > 0)
+        Metrics::addIteration();
+
+        if (i > 0)
         {
             result += ",";
         }
         result += *amenities.get(i);
     }
     return result;
-    
 }
 
-
-String dateToString(const Date& date)
+String dateToString(const Date &date)
 {
-    return String::toString(date.getDay()) + "/" + 
-            String::toString(date.getMonth()) + "/" +
-            String::toString(date.getYear());
+    return String::toString(date.getDay()) + "/" +
+           String::toString(date.getMonth()) + "/" +
+           String::toString(date.getYear());
 }
 
-String getHostAccommodationIds(const Host& host)
+String getHostAccommodationIds(const Host &host)
 {
     String result = "";
-    List<Accommodation*> accommodation = host.getAccommodations();
+    List<Accommodation *> accommodation = host.getAccommodations();
 
-    for(unsigned int i = 0; i < accommodation.size(); i++)
+    for (unsigned int i = 0; i < accommodation.size(); i++)
     {
-        if(i > 0)
+        Metrics::addIteration();
+
+        if (i > 0)
         {
             result += ",";
         }
@@ -78,33 +78,33 @@ String getHostAccommodationIds(const Host& host)
     return result;
 }
 
-
-void loadAccomodations(List<Accommodation*>& allAccommodations)
+void loadAccomodations(List<Accommodation *> &allAccommodations)
 {
-    std::ifstream accomArc(archiveAccomodations);    
+    std::ifstream accomArc(archiveAccomodations);
 
     String line;
     List<String> data;
 
-    if (!accomArc.is_open()) {
+    if (!accomArc.is_open())
+    {
         printError("No se pudo abrir el archivo de alojamientos.\n");
         return;
     }
 
-    while(String::getLine(accomArc, line))
+    while (String::getLine(accomArc, line))
     {
-        data = line.split('|');
-        
+        Metrics::addIteration();
 
-        if (!validateLineFields(data, 8, "Alojamientos")) {
+        data = line.split('|');
+
+        if (!validateLineFields(data, 8, "Alojamientos"))
+        {
             continue;
         }
 
-
         List<String> amenities = data.get(7)->split(',');
 
-
-        Accommodation* newAccommodation {nullptr};
+        Accommodation *newAccommodation{nullptr};
         try
         {
             // Create new Accommodation object in heap
@@ -112,47 +112,49 @@ void loadAccomodations(List<Accommodation*>& allAccommodations)
                 String::toInt(data.get(0)->getRawData()), // ID
                 *data.get(1),                             // Name
                 nullptr,                                  // Host (will be set later)
-                *data.get(2),                            // Department
+                *data.get(2),                             // Department
                 *data.get(3),                             // Municipality
-                *data.get(4),                            // Type
-                *data.get(5),                            // Address
+                *data.get(4),                             // Type
+                *data.get(5),                             // Address
                 String::toInt(data.get(6)->getRawData()), // Price per night
                 amenities                                 // Amenities list
             );
 
             allAccommodations.insertEnd(newAccommodation);
         }
-        catch(...)
+        catch (...)
         {
-            if(newAccommodation != nullptr)
+            if (newAccommodation != nullptr)
             {
-                delete newAccommodation; 
+                delete newAccommodation;
             }
             printError("Error al crear el alojamiento\n");
         }
     }
 
     accomArc.close();
-
 }
 
-
-void loadReservations(List<Reservation*>& allReservations,
-     const List<Accommodation*>& allAccommodations, int &accomMaxID, int &resMaxID)
+void loadReservations(List<Reservation *> &allReservations,
+                      const List<Accommodation *> &allAccommodations, int &accomMaxID, int &resMaxID)
 {
     std::ifstream resArc(archiveReservations);
 
     String line;
     List<String> data;
 
-    if (!resArc.is_open()) {
+    if (!resArc.is_open())
+    {
         printError("No se pudo abrir el archivo de reservas.\n");
         return;
     }
 
-    while(String::getLine(resArc, line))
+    while (String::getLine(resArc, line))
     {
-        if(line.size() == 0) continue; 
+        Metrics::addIteration();
+
+        if (line.size() == 0)
+            continue;
 
         data = line.split('|');
 
@@ -161,19 +163,19 @@ void loadReservations(List<Reservation*>& allReservations,
             continue;
         }
 
-
         List<String> startDateSplit = data.get(3)->split('/');
         List<String> paymentDateSplit = data.get(6)->split('/');
 
-        if (startDateSplit.size() != 3 || paymentDateSplit.size() != 3) {
+        if (startDateSplit.size() != 3 || paymentDateSplit.size() != 3)
+        {
             printError("Fecha de inicio o fecha de pago inválida en la reserva.\n");
             continue;
         }
 
         Date startDate(
-            String::toInt(startDateSplit.get(0)->getRawData()),  // Day
-            String::toInt(startDateSplit.get(1)->getRawData()),  // Month
-            String::toInt(startDateSplit.get(2)->getRawData())   // Year
+            String::toInt(startDateSplit.get(0)->getRawData()), // Day
+            String::toInt(startDateSplit.get(1)->getRawData()), // Month
+            String::toInt(startDateSplit.get(2)->getRawData())  // Year
         );
 
         Date paymentDate(
@@ -182,25 +184,23 @@ void loadReservations(List<Reservation*>& allReservations,
             String::toInt(paymentDateSplit.get(2)->getRawData())  // Year
         );
 
+        Accommodation *accommodation = findAccommodationById(allAccommodations,
+                                                             String::toInt(data.get(1)->getRawData()));
 
-        Accommodation* accommodation = findAccommodationById(allAccommodations, 
-            String::toInt(data.get(1)->getRawData()));
-
-        if (accommodation == nullptr) 
+        if (accommodation == nullptr)
         {
-            printError(String("Alojamiento no encontrado para la reserva con ID: ") 
-                + data.get(0)->getRawData() + "\n");
+            printError(String("Alojamiento no encontrado para la reserva con ID: ") + data.get(0)->getRawData() + "\n");
             continue; // Skip this reservation if accommodation is not found
         }
 
-        Reservation* newReservation = nullptr;
+        Reservation *newReservation = nullptr;
 
         try
         {
             // Create new Reservation object in heap
             newReservation = new Reservation(
                 String::toInt(data.get(0)->getRawData()), // ID
-                accommodation,                           // Accommodation 
+                accommodation,                            // Accommodation
                 *data.get(2),                             // Guest name
                 startDate,                                // Start date
                 String::toInt(data.get(4)->getRawData()), // Days
@@ -214,45 +214,48 @@ void loadReservations(List<Reservation*>& allReservations,
 
             accommodation->setReservation(newReservation);
 
-            if(accommodation->getId() > accomMaxID) accomMaxID = accommodation->getId();
-            if(newReservation->getId() > resMaxID) resMaxID = newReservation->getId();
+            if (accommodation->getId() > accomMaxID)
+                accomMaxID = accommodation->getId();
+            if (newReservation->getId() > resMaxID)
+                resMaxID = newReservation->getId();
         }
-        catch(...)
+        catch (...)
         {
-            if(newReservation != nullptr)
+            if (newReservation != nullptr)
             {
-                delete newReservation; 
+                delete newReservation;
             }
             printError("Error al crear la reserva\n");
             continue; // Skip this reservation if an error occurs
         }
-        
     }
 
     resArc.close();
 }
 
-
-void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
+void loadHost(List<Host *> &allHosts, const List<Accommodation *> &accommodations)
 {
     std::ifstream hostArc(archiveHost);
 
     String line;
     List<String> data;
 
-
-    if (!hostArc.is_open()) {
+    if (!hostArc.is_open())
+    {
         printError("No se pudo abrir el archivo Anfitriones.\n");
         return;
     }
 
-    while(String::getLine(hostArc, line))
+    while (String::getLine(hostArc, line))
     {
-        if (line.size() == 0) continue;
+        Metrics::addIteration();
+
+        if (line.size() == 0)
+            continue;
 
         data = line.split('|');
 
-        if(!validateLineFields(data, 6, "Anfitriones"))
+        if (!validateLineFields(data, 6, "Anfitriones"))
         {
             continue;
         }
@@ -264,14 +267,14 @@ void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
             String::toInt(cutOffDateSplit.get(2)->getRawData())  // Year
         );
 
-        Host* newHost = nullptr;
+        Host *newHost = nullptr;
         try
         {
             newHost = new Host(
                 *data.get(0),                             // Name
                 *data.get(1),                             // Document
                 String::toInt(data.get(2)->getRawData()), // Antiquity in months
-                String::toInt(data.get(3)->getRawData()),  // Punctuation
+                String::toInt(data.get(3)->getRawData()), // Punctuation
                 cutOffDate                                // cutOffDate
             );
 
@@ -279,11 +282,13 @@ void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
 
             for (unsigned int i = 0; i < accommodationIds.size(); i++)
             {
+                Metrics::addIteration();
+
                 int id = String::toInt(*accommodationIds.get(i));
 
-                
-                Accommodation* accommodation = findAccommodationById(accommodations, id);
-                if (accommodation) {
+                Accommodation *accommodation = findAccommodationById(accommodations, id);
+                if (accommodation)
+                {
                     newHost->addAccomodation(accommodation);
                     accommodation->setHost(newHost);
                 }
@@ -291,41 +296,42 @@ void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations)
 
             allHosts.insertEnd(newHost);
         }
-        catch(...)
+        catch (...)
         {
-            if(newHost)
+            if (newHost)
             {
                 delete newHost;
             }
             printError("Error creando host\n");
         }
-     
     }
 
     hostArc.close();
 }
 
-
-void loadGuest(List<Guest*>& allGuests, const List<Reservation*>& allReservations)
+void loadGuest(List<Guest *> &allGuests, const List<Reservation *> &allReservations)
 {
     std::ifstream guestArc(archiveGuest);
 
     String line;
     List<String> data;
 
-    if (!guestArc.is_open()) {
+    if (!guestArc.is_open())
+    {
         printError("No se pudo abrir el archivo huesped.\n");
         return;
     }
 
-    while(String::getLine(guestArc, line))
+    while (String::getLine(guestArc, line))
     {
-        if(line.size() == 0) continue;
+        Metrics::addIteration();
 
+        if (line.size() == 0)
+            continue;
 
         data = line.split('|');
-        
-        if(!validateLineFields(data, 4, "Huesped"))
+
+        if (!validateLineFields(data, 4, "Huesped"))
         {
             continue;
         }
@@ -344,12 +350,14 @@ void loadGuest(List<Guest*>& allGuests, const List<Reservation*>& allReservation
             // load reservations for the guest
             for (unsigned int i = 0; i < allReservations.size(); i++)
             {
-                Reservation* reservation = *allReservations.get(i);
-                if (reservation) 
+                Metrics::addIteration();
+
+                Reservation *reservation = *allReservations.get(i);
+                if (reservation)
                 {
-                    const String& guestName = reservation->getGuestName();
-                    const String& newGuestName = newGuest->getName();
-                    
+                    const String &guestName = reservation->getGuestName();
+                    const String &newGuestName = newGuest->getName();
+
                     if (guestName == newGuestName)
                     {
                         newGuest->addReservation(reservation);
@@ -357,14 +365,12 @@ void loadGuest(List<Guest*>& allGuests, const List<Reservation*>& allReservation
                 }
             }
 
-
             allGuests.insertEnd(newGuest);
-
-
         }
-        catch(...)
+        catch (...)
         {
-            if (newGuest) {
+            if (newGuest)
+            {
                 delete newGuest;
             }
             printError("Error creando huésped\n");
@@ -374,19 +380,24 @@ void loadGuest(List<Guest*>& allGuests, const List<Reservation*>& allReservation
     guestArc.close();
 }
 
-
-void saveAccommodations(const List<Accommodation*>& allAccommodations) {
+void saveAccommodations(const List<Accommodation *> &allAccommodations)
+{
     std::ofstream accomFile(archiveAccomodations);
-    
-    if (!accomFile.is_open()) {
+
+    if (!accomFile.is_open())
+    {
         printError("No se pudo abrir el archivo de alojamientos para escritura.\n");
         return;
     }
 
-    for (unsigned int i = 0; i < allAccommodations.size(); i++) {
-        Accommodation* accommodation = *allAccommodations.get(i);
-        if (!accommodation) continue; // skip nullptr
-        
+    for (unsigned int i = 0; i < allAccommodations.size(); i++)
+    {
+        Metrics::addIteration();
+
+        Accommodation *accommodation = *allAccommodations.get(i);
+        if (!accommodation)
+            continue; // skip nullptr
+
         // Format: ID|Name|Department|Municipality|Type|Address|PricePerNight|Amenities
         accomFile << accommodation->getId() << "|"
                   << accommodation->getName().getRawData() << "|"
@@ -396,35 +407,44 @@ void saveAccommodations(const List<Accommodation*>& allAccommodations) {
                   << accommodation->getAddress().getRawData() << "|"
                   << accommodation->getPricePerNight() << "|"
                   << amenitiesListToString(accommodation->getAmenities()).getRawData();
-        
+
         // only add a line if not is the last element
-        if (i < allAccommodations.size() - 1) {
+        if (i < allAccommodations.size() - 1)
+        {
             accomFile << "\n";
         }
     }
-    
+
     accomFile.close();
-    
-    if (accomFile.good()) {
-        //printSuccess("Alojamientos guardadas exitosamente.\n");
-    } else {
+
+    if (accomFile.good())
+    {
+        // printSuccess("Alojamientos guardadas exitosamente.\n");
+    }
+    else
+    {
         printError("Error al guardar alojamientos.\n");
     }
 }
 
-
-void saveReservations(const List<Reservation*>& allReservations) {
+void saveReservations(const List<Reservation *> &allReservations)
+{
     std::ofstream resFile(archiveReservations);
-    
-    if (!resFile.is_open()) {
+
+    if (!resFile.is_open())
+    {
         printError("No se pudo abrir el archivo de reservaciones para escritura.\n");
         return;
     }
 
-    for (unsigned int i = 0; i < allReservations.size(); i++) {
-        Reservation* reservation = *allReservations.get(i);
-        if (!reservation || !reservation->getAccommodation()) continue; 
-        
+    for (unsigned int i = 0; i < allReservations.size(); i++)
+    {
+        Metrics::addIteration();
+
+        Reservation *reservation = *allReservations.get(i);
+        if (!reservation || !reservation->getAccommodation())
+            continue;
+
         // Format: ID|AccommodationID|GuestName|StartDate|Days|PaymentMethod|PaymentDate|TotalPrice|Annotations
         resFile << reservation->getId() << "|"
                 << reservation->getAccommodation()->getId() << "|"
@@ -435,35 +455,44 @@ void saveReservations(const List<Reservation*>& allReservations) {
                 << dateToString(reservation->getPaymentDate()).getRawData() << "|"
                 << reservation->getTotalPrice() << "|"
                 << reservation->getAnotations().getRawData();
-        
+
         // only add a line if not is the last element
-        if (i < allReservations.size() - 1) {
+        if (i < allReservations.size() - 1)
+        {
             resFile << "\n";
         }
     }
-    
+
     resFile.close();
-    
-    if (resFile.good()) {
-        //printSuccess("Reservaciones guardadas exitosamente.\n");
-    } else {
+
+    if (resFile.good())
+    {
+        // printSuccess("Reservaciones guardadas exitosamente.\n");
+    }
+    else
+    {
         printError("Error al guardar reservaciones.\n");
     }
 }
 
-
-void saveHosts(const List<Host*>& allHosts) {
+void saveHosts(const List<Host *> &allHosts)
+{
     std::ofstream hostFile(archiveHost);
-    
-    if (!hostFile.is_open()) {
+
+    if (!hostFile.is_open())
+    {
         printError("No se pudo abrir el archivo de hosts para escritura.\n");
         return;
     }
 
-    for (unsigned int i = 0; i < allHosts.size(); i++) {
-        Host* host = *allHosts.get(i);
-        if (!host) continue;
-        
+    for (unsigned int i = 0; i < allHosts.size(); i++)
+    {
+        Metrics::addIteration();
+
+        Host *host = *allHosts.get(i);
+        if (!host)
+            continue;
+
         // Format: Name|Document|Antiquity|Punctuation|cutOffDate|AccommodationIDs
         hostFile << host->getName().getRawData() << "|"
                  << host->getDocument().getRawData() << "|"
@@ -471,83 +500,101 @@ void saveHosts(const List<Host*>& allHosts) {
                  << host->getPuntuation() << "|"
                  << dateToString(host->getCutOffDate()).getRawData() << "|"
                  << getHostAccommodationIds(*host).getRawData();
-        
+
         // only add a line if not is the last element
-        if (i < allHosts.size() - 1) {
+        if (i < allHosts.size() - 1)
+        {
             hostFile << "\n";
         }
     }
-    
+
     hostFile.close();
-    
-    if (hostFile.good()) {
-        //printSuccess("Hosts guardados exitosamente.\n");
-    } else {
+
+    if (hostFile.good())
+    {
+        // printSuccess("Hosts guardados exitosamente.\n");
+    }
+    else
+    {
         printError("Error al guardar hosts.\n");
     }
 }
 
-
-void saveGuests(const List<Guest*>& allGuests) {
+void saveGuests(const List<Guest *> &allGuests)
+{
     std::ofstream guestFile(archiveGuest);
-    
-    if (!guestFile.is_open()) {
+
+    if (!guestFile.is_open())
+    {
         printError("No se pudo abrir el archivo de huéspedes para escritura.\n");
         return;
     }
 
-    for (unsigned int i = 0; i < allGuests.size(); i++) {
-        Guest* guest = *allGuests.get(i);
-        if (!guest) continue; 
-        
+    for (unsigned int i = 0; i < allGuests.size(); i++)
+    {
+        Metrics::addIteration();
+
+        Guest *guest = *allGuests.get(i);
+        if (!guest)
+            continue;
+
         // Format: Name|Document|Antiquity|Punctuation
         guestFile << guest->getName().getRawData() << "|"
                   << guest->getDocument().getRawData() << "|"
                   << guest->getAntiquity() << "|"
                   << guest->getPuntuation();
-        
+
         // only add a line if not is the last element
-        if (i < allGuests.size() - 1) {
+        if (i < allGuests.size() - 1)
+        {
             guestFile << "\n";
         }
     }
-    
+
     guestFile.close();
-    
-    if (guestFile.good()) {
-        //printSuccess("Huéspedes guardados exitosamente.\n");
-    } else {
+
+    if (guestFile.good())
+    {
+        // printSuccess("Huéspedes guardados exitosamente.\n");
+    }
+    else
+    {
         printError("Error al guardar huéspedes.\n");
     }
 }
 
+void saveAllData(const List<Accommodation *> &accommodations,
+                 const List<Reservation *> &reservations,
+                 const List<Host *> &hosts,
+                 const List<Guest *> &guests)
+{
 
-void saveAllData(const List<Accommodation*>& accommodations,
-                 const List<Reservation*>& reservations,
-                 const List<Host*>& hosts,
-                 const List<Guest*>& guests) {
-    
-    //print("Guardando datos...\n");
-    
+    // print("Guardando datos...\n");
+
     saveAccommodations(accommodations);
-    saveHosts(hosts);           
-    saveReservations(reservations);  
-    saveGuests(guests);         
-    
-    //printSuccess("Todos los datos han sido guardados exitosamente.\n");
+    saveHosts(hosts);
+    saveReservations(reservations);
+    saveGuests(guests);
+
+    // printSuccess("Todos los datos han sido guardados exitosamente.\n");
 }
 
-void saveHistoricReservations(const List<Reservation*>& historicReservations) {
+void saveHistoricReservations(const List<Reservation *> &historicReservations)
+{
     std::ofstream histFile(archiveHistoricRev, std::ios::app); // append mode(how: i dont know)
 
-    if (!histFile.is_open()) {
+    if (!histFile.is_open())
+    {
         printError("No se pudo abrir el archivo histórico para escritura.\n");
         return;
     }
 
-    for (unsigned int i = 0; i < historicReservations.size(); i++) {
-        Reservation* reservation = *historicReservations.get(i);
-        if (!reservation || !reservation->getAccommodation()) continue;
+    for (unsigned int i = 0; i < historicReservations.size(); i++)
+    {
+        Metrics::addIteration();
+        Reservation *reservation = *historicReservations.get(i);
+        if (!reservation || !reservation->getAccommodation())
+            continue;
 
         histFile << reservation->getId() << "|"
                  << reservation->getAccommodation()->getId() << "|"
@@ -562,40 +609,50 @@ void saveHistoricReservations(const List<Reservation*>& historicReservations) {
 
     histFile.close();
 
-    if (histFile.good()) {
-        //printSuccess("Reservaciones históricas guardadas exitosamente.\n");
-    } else {
+    if (histFile.good())
+    {
+        // printSuccess("Reservaciones históricas guardadas exitosamente.\n");
+    }
+    else
+    {
         printError("Error al guardar reservaciones históricas.\n");
     }
 }
 
-
-
-void cleanupMemory(List<Accommodation*>& accommodations, 
-                  List<Reservation*>& reservations,
-                  List<Host*>& hosts, 
-                  List<Guest*>& guests)
+void cleanupMemory(List<Accommodation *> &accommodations,
+                   List<Reservation *> &reservations,
+                   List<Host *> &hosts,
+                   List<Guest *> &guests)
 {
 
-    for (unsigned int i = 0; i < accommodations.size(); i++) {
+    for (unsigned int i = 0; i < accommodations.size(); i++)
+    {
+        Metrics::addIteration();
+
         delete *accommodations.get(i);
     }
     accommodations.clear();
 
+    for (unsigned int i = 0; i < reservations.size(); i++)
+    {
+        Metrics::addIteration();
 
-    for (unsigned int i = 0; i < reservations.size(); i++) {
         delete *reservations.get(i);
     }
     reservations.clear();
 
+    for (unsigned int i = 0; i < hosts.size(); i++)
+    {
+        Metrics::addIteration();
 
-    for (unsigned int i = 0; i < hosts.size(); i++) {
         delete *hosts.get(i);
     }
     hosts.clear();
 
-  
-    for (unsigned int i = 0; i < guests.size(); i++) {
+    for (unsigned int i = 0; i < guests.size(); i++)
+    {
+        Metrics::addIteration();
+
         delete *guests.get(i);
     }
     guests.clear();

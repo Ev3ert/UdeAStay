@@ -8,48 +8,41 @@
 #include "../Actors/host.h"
 #include "../Actors/guest.h"
 
-
 const String archiveAccomodations = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/accommodations.txt";
 const String archiveReservations = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/reservations.txt";
 const String archiveHost = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/hosts.txt";
 const String archiveGuest = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/guests.txt";
 const String archiveHistoricRev = "/home/evert/Documents/Academico/Informatica_2/UdeAStay/Program/src/historic.txt";
 
+bool validateLineFields(const List<String> &data, unsigned int index, const String &fieldName);
+Accommodation *findAccommodationById(const List<Accommodation *> &accommodations, int id);
 
-bool validateLineFields(const List<String>& data, unsigned int index, const String& fieldName);
-Accommodation* findAccommodationById(const List<Accommodation*>& accommodations, int id);
+String amenitiesListToString(const List<String> &amenities);
+String dateToString(const Date &date);
+String getHostAccommodationIds(const Host &host);
 
-String amenitiesListToString(const List<String>& amenities);
-String dateToString(const Date& date);
-String getHostAccommodationIds(const Host& host);
+void loadAccomodations(List<Accommodation *> &allAccommodations);
 
+void loadReservations(List<Reservation *> &allReservations,
+                      const List<Accommodation *> &allAccommodations, int &accomMaxID, int &resMaxID);
 
-void loadAccomodations(List<Accommodation*>& allAccommodations);
+void loadHost(List<Host *> &allHosts, const List<Accommodation *> &accommodations);
 
-void loadReservations(List<Reservation*>& allReservations,
-     const List<Accommodation*>& allAccommodations, int &accomMaxID, int &resMaxID);
+void loadGuest(List<Guest *> &allGuests, const List<Reservation *> &allReservations);
 
-void loadHost(List<Host*>& allHosts, const List<Accommodation*>& accommodations);
+void saveAccomodations(List<Accommodation *> &allAccommodations);
+void saveReservations(List<Reservation *> &allReservations);
+void saveHost(List<Host *> &allHosts);
+void saveGuest(List<Guest *> &allGuests);
+void saveAllData(const List<Accommodation *> &accommodations,
+                 const List<Reservation *> &reservations,
+                 const List<Host *> &hosts,
+                 const List<Guest *> &guests);
+void saveHistoricReservations(const List<Reservation *> &historicReservations);
 
-void loadGuest(List<Guest*>& allGuests, const List<Reservation*>& allReservations);
-
-void saveAccomodations(List<Accommodation*>& allAccommodations);
-void saveReservations(List<Reservation*>& allReservations);
-void saveHost(List<Host*>& allHosts);
-void saveGuest(List<Guest*>& allGuests);
-void saveAllData(const List<Accommodation*>& accommodations,
-                 const List<Reservation*>& reservations,
-                 const List<Host*>& hosts,
-                 const List<Guest*>& guests);
-void saveHistoricReservations(const List<Reservation*>& historicReservations);
-
-void cleanupMemory(List<Accommodation*>& accommodations, 
-                  List<Reservation*>& reservations,
-                  List<Host*>& hosts, 
-                  List<Guest*>& guests);
-
-
-
-
+void cleanupMemory(List<Accommodation *> &accommodations,
+                   List<Reservation *> &reservations,
+                   List<Host *> &hosts,
+                   List<Guest *> &guests);
 
 #endif // FILESYSTEM_H

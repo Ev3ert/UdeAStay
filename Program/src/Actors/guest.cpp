@@ -3,17 +3,26 @@
 #include "accommodation.h"
 #include "accommodation.h"
 #include "../Utils/ConUtils.h"
+#include "../Utils/metrics.h"
 #include "../DataStructure/string.h"
 
 /// * Constructors
 
-Guest::Guest(const String& name, const String& document, int antiquity, int puntuation)
-    : name(name), document(document), antiquity(antiquity), puntuation(puntuation) {}
+Guest::Guest(const String &name, const String &document, int antiquity, int puntuation)
+    : name(name), document(document), antiquity(antiquity), puntuation(puntuation)
+{
+    Metrics::addMemory(sizeof(Guest));
+}
 
+/// * Destructors
+Guest::~Guest()
+{
+    Metrics::removeMemory(sizeof(Guest));
+}
 
 /// * Methods
 
-void Guest::addReservation(Reservation* reservation)
+void Guest::addReservation(Reservation *reservation)
 {
     reservations.insertEnd(reservation);
 }
@@ -22,16 +31,18 @@ void Guest::cancelReservation(unsigned int id)
 {
     for (unsigned int i = 0; i < reservations.size(); i++)
     {
-        Reservation* reservation = *reservations.get(i);
+        Metrics::addIteration();
+
+        Reservation *reservation = *reservations.get(i);
         if (reservation->getId() == id)
         {
-            Accommodation* accom = reservation->getAccommodation();
+            Accommodation *accom = reservation->getAccommodation();
             accom->deleteReservation(reservation->getId());
-            
+
             reservations.deleteByPosition(i);
-            
+
             delete reservation;
-            
+
             return;
         }
     }
@@ -39,17 +50,19 @@ void Guest::cancelReservation(unsigned int id)
 
 bool Guest::checkAvailability(Date date, int days) const
 {
-    if (days <= 0) return false;
+    if (days <= 0)
+        return false;
 
     Date endDate = date.addDays(days);
 
     for (unsigned int i = 0; i < reservations.size(); i++)
     {
+        Metrics::addIteration();
+
         // desreference the pointer to get the object address
         Reservation *reservation = *reservations.get(i);
         Date resStart = reservation->getStartDate();
         Date resEnd = resStart.addDays(reservation->getDays());
-
 
         // TODO: rewrite this condition to be more readable
         if (!(endDate <= resStart || date >= resEnd))
@@ -61,7 +74,6 @@ bool Guest::checkAvailability(Date date, int days) const
     return true;
 }
 
-
 void Guest::viewReservations() const
 {
     if (reservations.isEmpty())
@@ -69,10 +81,12 @@ void Guest::viewReservations() const
         printError("No hay reservas para mostrar.");
         return;
     }
-    
+
     for (unsigned int i = 0; i < reservations.size(); i++)
     {
-        Reservation* reservation = *reservations.get(i);
+        Metrics::addIteration();
+
+        Reservation *reservation = *reservations.get(i);
 
         printTitle(String("Reserva #") + String::toString(i + 1), '-', 30);
         reservation->viewInfo();
@@ -80,12 +94,12 @@ void Guest::viewReservations() const
 }
 
 // getters
-const String& Guest::getDocument() const
+const String &Guest::getDocument() const
 {
     return document;
 }
 
-const String& Guest::getName() const
+const String &Guest::getName() const
 {
     return name;
 }
@@ -100,7 +114,7 @@ int Guest::getPuntuation() const
     return puntuation;
 }
 
-List<Reservation*> Guest::getReservations() const
+List<Reservation *> Guest::getReservations() const
 {
     return reservations;
 }

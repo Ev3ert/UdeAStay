@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include <iostream>
+#include "../Utils/metrics.h"
 
 template <typename T>
 class List
@@ -13,8 +14,15 @@ private:
         T data;
         Node *next;
 
-        Node(T value) : data(value), next(nullptr) {}
+        Node(T value) : data(value), next(nullptr)
+        {
+            Metrics::addMemory(sizeof(Node));
+        }
 
+        ~Node()
+        {
+            Metrics::removeMemory(sizeof(Node));
+        }
     };
 
     Node *head;
@@ -26,53 +34,58 @@ public:
 
     List() : head(nullptr), tail(nullptr), elements(0) {}
 
-    List(const List &other) : head(nullptr), tail(nullptr), elements(0) 
+    List(const List &other) : head(nullptr), tail(nullptr), elements(0)
     {
         Node *current = other.head;
-        while(current)
+        while (current)
         {
             insertEnd(current->data);
             current = current->next;
+            Metrics::addIteration();
         }
     }
 
-
     /// * Operators
 
-    List<T>& operator=(const List<T>& other)
+    List<T> &operator=(const List<T> &other)
     {
         if (this != &other) // Avoid self-assignment
         {
             clear();
 
-            Node* current = other.head;
+            Node *current = other.head;
             while (current)
             {
                 insertEnd(current->data);
                 current = current->next;
+
+                Metrics::addIteration();
             }
         }
 
         return *this;
-
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const List<T>& list) {
-        Node* current = list.head;
-        
-        if (current) {
+    friend std::ostream &operator<<(std::ostream &os, const List<T> &list)
+    {
+        Node *current = list.head;
+
+        if (current)
+        {
             os << current->data;
             current = current->next;
         }
-        
-        while (current) {
+
+        while (current)
+        {
             os << ", " << current->data;
             current = current->next;
+
+            Metrics::addIteration();
         }
-        
+
         return os;
     }
-
 
     /// * Destructor
 
@@ -80,7 +93,6 @@ public:
     {
         clear();
     }
-
 
     /// * Methods
 
@@ -148,6 +160,8 @@ public:
         for (unsigned int i = 0; i < position - 1; ++i)
         {
             current = current->next;
+
+            Metrics::addIteration();
         }
 
         Node *temp = current->next;
@@ -176,11 +190,12 @@ public:
         for (unsigned int i = 0; i < position; i++)
         {
             current = current->next;
+
+            Metrics::addIteration();
         }
 
         return &(current->data);
     }
-
 
     // Check if the list is empty
     bool isEmpty() const
@@ -202,6 +217,8 @@ public:
             Node *temp = head;
             head = head->next;
             delete temp;
+
+            Metrics::addIteration();
         }
 
         head = nullptr;

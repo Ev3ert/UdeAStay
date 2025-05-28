@@ -13,19 +13,22 @@ private:
 
     String name;
     String document;
-    int antiquity; // in months
+    int antiquity;  // in months
     int puntuation; // how can a guest be rated?
-    List<Reservation*> reservations; 
+    List<Reservation *> reservations;
 
 public:
     /// * Constructors
 
-    Guest(const String& name, const String& document, int antiquity, int puntuation);
+    Guest(const String &name, const String &document, int antiquity, int puntuation);
+
+    /// * Destructors
+    ~Guest();
 
     /// * Methods
 
     // Add reservatuions to the list
-    void addReservation(Reservation* reservation);
+    void addReservation(Reservation *reservation);
 
     // Remove reservations from the list by their ID
     void cancelReservation(unsigned int id);
@@ -36,16 +39,13 @@ public:
     // Prints all reservations from this Guest
     void viewReservations() const;
 
-
     // Getters
 
-    const String& getDocument() const;
-    const String& getName() const;
+    const String &getDocument() const;
+    const String &getName() const;
     int getAntiquity() const;
     int getPuntuation() const;
-    List<Reservation*> getReservations() const;
-
+    List<Reservation *> getReservations() const;
 };
-
 
 #endif // GUEST_H
